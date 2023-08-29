@@ -6,6 +6,10 @@ spring:
   profiles:
     default: local-postgres
 
+airport-api:
+  username: ff-interview
+  password: "@-*KzU.*dtP9dkoE7PryL2ojY!uDV.6JJGC9"
+  url: https://qa.foreflight.com/airports/
 ---
 ######################################################
 # Local Configuration (Postgres & Docker)
@@ -19,9 +23,11 @@ spring:
     url: jdbc:postgresql://localhost:55432/airport_service_db
     username: postgres
     password: postgres
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
   docker:
     compose:
-      file: ./compose.yaml
+      file: ./compose.yml
       enabled: true
 
 ---
