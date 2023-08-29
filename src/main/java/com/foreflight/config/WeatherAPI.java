@@ -1,6 +1,6 @@
 package com.foreflight.config;
 
-import com.foreflight.airport.Airport;
+import com.foreflight.weather.Weather;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -12,36 +12,33 @@ import org.springframework.web.client.RestTemplate;
 
 @Configuration
 @Getter
-public class AirportAPI {
+public class WeatherAPI {
 
     private final HttpEntity<String> httpEntity;
     private final RestTemplate restTemplate;
-    private final String username;
-    private final String password;
     private final String apiUrl;
 
-    public AirportAPI(RestTemplate restTemplate,
-                      @Value("${api.airport.username}") String username,
-                      @Value("${api.airport.password}") String password,
-                      @Value("${api.airport.url}") String apiUrl) {
+    public WeatherAPI(RestTemplate restTemplate, @Value("${api.weather.url}") String apiUrl) {
         this.restTemplate = restTemplate;
-        this.username = username;
-        this.password = password;
         this.apiUrl = apiUrl;
         this.httpEntity = createAuthenticatedHttpEntity();
     }
 
     private HttpEntity<String> createAuthenticatedHttpEntity() {
         HttpHeaders headers = new HttpHeaders();
-        headers.setBasicAuth(this.username, this.password);
         headers.set("ff-coding-exercise", "1");
         return new HttpEntity<>(headers);
     }
 
-    public ResponseEntity<Airport> findAirport(String identifier) {
+    public ResponseEntity<Weather> findWeather(String identifier) {
+        System.out.println(this.apiUrl + identifier);
+        System.out.println(restTemplate.exchange(
+                this.apiUrl + identifier,
+                HttpMethod.GET,
+                httpEntity, Weather.class).getBody());
         return restTemplate.exchange(
                 this.apiUrl + identifier,
                 HttpMethod.GET,
-                httpEntity, Airport.class);
+                httpEntity, Weather.class);
     }
 }

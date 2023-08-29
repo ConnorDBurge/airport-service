@@ -6,10 +6,13 @@ spring:
   profiles:
     default: local-postgres
 
-airport-api:
-  username: ff-interview
-  password: "@-*KzU.*dtP9dkoE7PryL2ojY!uDV.6JJGC9"
-  url: https://qa.foreflight.com/airports/
+api:
+  airport:
+    username: ff-interview
+    password: "@-*KzU.*dtP9dkoE7PryL2ojY!uDV.6JJGC9"
+    url: https://qa.foreflight.com/airports/
+  weather:
+    url: https://qa.foreflight.com/weather/report/
 ---
 ######################################################
 # Local Configuration (Postgres & Docker)

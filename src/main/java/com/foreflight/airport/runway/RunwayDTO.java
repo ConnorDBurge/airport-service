@@ -18,7 +18,7 @@ public class RunwayDTO {
     private Float longitudeRecip;
     private Float latitudeRecip;
 
-    public static RunwayDTO fromEntity(@NonNull Runway runway) {
+    public static RunwayDTO fromEntity(Runway runway) {
         return RunwayDTO.builder()
                 .ident(runway.getIdent())
                 .name(runway.getName())
@@ -30,7 +30,7 @@ public class RunwayDTO {
                 .build();
     }
 
-    public static List<RunwayDTO> fromEntities(@NonNull List<Runway> runway) {
+    public static List<RunwayDTO> fromEntities(List<Runway> runway) {
         return runway.stream()
                 .map(RunwayDTO::fromEntity)
                 .collect(java.util.stream.Collectors.toList());

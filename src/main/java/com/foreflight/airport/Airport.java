@@ -1,6 +1,7 @@
 package com.foreflight.airport;
 
 import com.foreflight.airport.runway.Runway;
+import com.foreflight.weather.Weather;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,4 +27,7 @@ public class Airport {
     @OneToMany
     @JoinColumn(name = "airport_guid", referencedColumnName = "guid")
     private List<Runway> runways;
+
+    @OneToOne
+    private Weather weather;
 }

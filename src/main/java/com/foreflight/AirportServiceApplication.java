@@ -12,4 +12,8 @@ public class AirportServiceApplication {
         SpringApplication.run(AirportServiceApplication.class, args);
     }
 
+    @Bean
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
+    }
 }

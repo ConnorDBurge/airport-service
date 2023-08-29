@@ -1,6 +1,8 @@
 package com.foreflight.airport;
 
 import com.foreflight.airport.runway.RunwayDTO;
+import com.foreflight.weather.Weather;
+import com.foreflight.weather.WeatherDTO;
 import lombok.*;
 
 import java.util.List;
@@ -17,18 +19,20 @@ public class AirportDTO {
     private Float latitude;
     private Float longitude;
     private List<RunwayDTO> runways;
+    private WeatherDTO weather;
 
-    protected static AirportDTO fromEntity(@NonNull Airport airport) {
+    protected static AirportDTO fromEntity(Airport airport) {
         return AirportDTO.builder()
                 .ident(airport.getIcao())
                 .name(airport.getName())
                 .latitude(airport.getLatitude())
                 .longitude(airport.getLongitude())
                 .runways(RunwayDTO.fromEntities(airport.getRunways()))
+                .weather(WeatherDTO.fromEntity(airport.getWeather()))
                 .build();
     }
 
-    protected static List<AirportDTO> fromEntities(@NonNull List<Airport> airports) {
+    protected static List<AirportDTO> fromEntities(List<Airport> airports) {
         return airports.stream()
                 .map(AirportDTO::fromEntity)
                 .collect(Collectors.toList());
