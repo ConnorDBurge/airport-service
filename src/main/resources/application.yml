@@ -1,0 +1,47 @@
+---
+######################################################
+# Default Configuration
+######################################################
+spring:
+  profiles:
+    default: local-postgres
+
+---
+######################################################
+# Local Configuration (Postgres & Docker)
+######################################################
+spring:
+  config:
+    activate:
+      on-profile: local-postgres
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:55432/airport_service_db
+    username: postgres
+    password: postgres
+  docker:
+    compose:
+      file: ./compose.yaml
+      enabled: true
+
+---
+######################################################
+# Local Configuration (H2)
+######################################################
+spring:
+  config:
+    activate:
+      on-profile: local-h2
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:airport_service_db
+    username: root
+    password: root
+  h2:
+    console:
+      enabled: true
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+  docker:
+    compose:
+      enabled: false
