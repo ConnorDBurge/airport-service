@@ -24,9 +24,7 @@ public class AirportService implements AirportServiceInterface {
         for (String identifier : identifiers) {
             Weather weather = weatherAPI.findWeather(identifier).getBody();
             Airport airport = airportAPI.findAirport(identifier).getBody();
-
-            airport.setWeather(weather);
-
+            Objects.requireNonNull(airport).setWeather(weather);
             airports.add(airport);
         }
 

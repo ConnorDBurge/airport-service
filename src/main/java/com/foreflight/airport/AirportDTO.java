@@ -1,14 +1,13 @@
 package com.foreflight.airport;
 
 import com.foreflight.airport.runway.RunwayDTO;
-import com.foreflight.weather.Weather;
 import com.foreflight.weather.WeatherDTO;
 import lombok.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Data
+@Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
