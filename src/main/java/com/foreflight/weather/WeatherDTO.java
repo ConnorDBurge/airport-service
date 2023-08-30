@@ -1,12 +1,13 @@
 package com.foreflight.weather;
 
-import com.foreflight.weather.report.conditions.cloudlayer.CloudLayer;
+import com.foreflight.weather.report.current.CurrentDTO;
+import com.foreflight.weather.report.forecast.ForecastDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import java.util.Optional;
 
 @Data
 @Builder
@@ -14,24 +15,17 @@ import java.util.List;
 @AllArgsConstructor
 public class WeatherDTO {
 
-    private Double temperature;
-    private Double relativeHumidity;
-    private String cloudCoverage;
-    private Integer visibility;
-    private Integer windSpeed;
-    private Integer windDirection;
+    private CurrentDTO current;
+    private ForecastDTO forecast;
 
     public static WeatherDTO fromEntity(Weather weather) {
-        String greatestCoverage = null;
-        List<CloudLayer> cloudLayers = weather.getReport().getConditions().getCloudLayers();
-        if (cloudLayers != null && !cloudLayers.isEmpty()) {
-            greatestCoverage = cloudLayers.get(cloudLayers.size() - 1).getCoverage();
-        }
-
         return WeatherDTO.builder()
-                .temperature(weather.getReport().getConditions().getTemperature())
-                .relativeHumidity(weather.getReport().getConditions().getRelativeHumidity())
-                .cloudCoverage(greatestCoverage)
+                .current(Optional.ofNullable(weather.getReport().getCurrent())
+                        .map(CurrentDTO::fromEntity)
+                        .orElse(null))
+                .forecast(Optional.ofNullable(weather.getReport().getForecast())
+                        .map(ForecastDTO::fromEntity)
+                        .orElse(null))
                 .build();
     }
 }

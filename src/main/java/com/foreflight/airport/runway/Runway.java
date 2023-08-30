@@ -16,9 +16,5 @@ public class Runway {
     private UUID guid;
     private String ident;
     private String name;
-    private Float latitudeBase;
-    private Float longitudeBase;
     private String recipName;
-    private Float longitudeRecip;
-    private Float latitudeRecip;
 }
