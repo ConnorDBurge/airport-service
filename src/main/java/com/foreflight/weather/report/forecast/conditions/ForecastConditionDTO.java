@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 @Getter
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 public class ForecastConditionDTO {
 
     private String text;

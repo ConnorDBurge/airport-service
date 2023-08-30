@@ -2,7 +2,6 @@ package com.foreflight.weather.report.forecast.conditions;
 
 import com.foreflight.weather.report.current.wind.Wind;
 import com.foreflight.weather.report.forecast.period.Period;
-import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

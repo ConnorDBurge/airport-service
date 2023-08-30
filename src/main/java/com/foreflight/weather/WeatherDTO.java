@@ -9,6 +9,7 @@ import java.util.Optional;
 @Getter
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 public class WeatherDTO {
 
     private CurrentDTO current;
