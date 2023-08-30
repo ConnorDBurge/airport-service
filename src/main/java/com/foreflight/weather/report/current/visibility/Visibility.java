@@ -1,10 +1,14 @@
 package com.foreflight.weather.report.current.visibility;
 
-import jakarta.persistence.Embeddable;
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-@Data
-@Embeddable
-public class Visibility{
+@Getter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class Visibility {
     private Double distanceSm;
 }

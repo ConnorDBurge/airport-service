@@ -1,10 +1,15 @@
 package com.foreflight.weather.report.current.cloudlayer;
 
 import jakarta.persistence.Embeddable;
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-@Data
-@Embeddable
+@Getter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class CloudLayer {
     private String coverage;
     private String type;

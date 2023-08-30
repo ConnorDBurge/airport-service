@@ -1,16 +1,12 @@
 package com.foreflight.weather.report.forecast;
 
 import com.foreflight.weather.report.forecast.conditions.ForecastConditionDTO;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
-@Data
+@Getter
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
 public class ForecastDTO {
 

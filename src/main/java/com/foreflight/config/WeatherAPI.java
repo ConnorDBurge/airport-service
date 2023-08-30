@@ -31,11 +31,6 @@ public class WeatherAPI {
     }
 
     public ResponseEntity<Weather> findWeather(String identifier) {
-        System.out.println(this.apiUrl + identifier);
-        System.out.println(restTemplate.exchange(
-                this.apiUrl + identifier,
-                HttpMethod.GET,
-                httpEntity, Weather.class).getBody());
         return restTemplate.exchange(
                 this.apiUrl + identifier,
                 HttpMethod.GET,

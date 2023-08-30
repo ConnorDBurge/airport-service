@@ -1,14 +1,14 @@
 package com.foreflight.weather.report.current;
 
 import com.foreflight.weather.report.current.cloudlayer.CloudLayer;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.foreflight.weather.report.current.visibility.Visibility;
+import com.foreflight.weather.report.current.wind.Wind;
+import lombok.*;
 
 import java.util.List;
+import java.util.Optional;
 
-@Data
+@Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -33,9 +33,15 @@ public class CurrentDTO {
                 .temperature(conditions.getTemperature())
                 .relativeHumidity(conditions.getRelativeHumidity())
                 .cloudCoverage(greatestCoverage)
-                .visibility(conditions.getVisibility().getDistanceSm())
-                .windSpeed(conditions.getWind().getSpeedKts())
-                .windDirection(conditions.getWind().getDirection())
+                .visibility(Optional.ofNullable(conditions.getVisibility())
+                        .map(Visibility::getDistanceSm)
+                        .orElse(null))
+                .windSpeed(Optional.ofNullable(conditions.getWind())
+                        .map(Wind::getSpeedKts)
+                        .orElse(null))
+                .windDirection(Optional.ofNullable(conditions.getWind())
+                        .map(Wind::getDirection)
+                        .orElse(null))
                 .build();
     }
 }

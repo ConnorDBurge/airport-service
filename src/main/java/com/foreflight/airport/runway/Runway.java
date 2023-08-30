@@ -1,19 +1,15 @@
 package com.foreflight.airport.runway;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-import java.util.UUID;
-
-@Entity
-@Data
+@Getter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Runway {
-
-    @Id
-    @GeneratedValue
-    private UUID guid;
     private String ident;
     private String name;
     private String recipName;
