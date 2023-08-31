@@ -15,8 +15,6 @@ public class AirportController {
 
     @GetMapping("/{idents}")
     public ResponseEntity<List<AirportDTO>> getAirports(@PathVariable(name = "idents") String idents) {
-          return airportService.getAll(idents)
-                  .map(ResponseEntity::ok)
-                  .orElse(ResponseEntity.noContent().build());
+        return ResponseEntity.ok(airportService.getAll(idents));
     }
 }

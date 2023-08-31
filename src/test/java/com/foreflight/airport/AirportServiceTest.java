@@ -3,6 +3,7 @@ package com.foreflight.airport;
 import com.foreflight.airport.runway.Runway;
 import com.foreflight.config.AirportAPI;
 import com.foreflight.config.WeatherAPI;
+import com.foreflight.exception.AirportNotFoundException;
 import com.foreflight.weather.Weather;
 import com.foreflight.weather.report.Report;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,7 +11,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,6 +27,7 @@ class AirportServiceTest {
     private AirportService underTest;
     @Mock private AirportAPI airportAPI;
     @Mock private WeatherAPI weatherAPI;
+    @Mock private RestTemplate restTemplate;
 
     @BeforeEach
     void setUp() {
@@ -49,11 +53,11 @@ class AirportServiceTest {
         when(weatherAPI.findWeather("KFFC")).thenReturn(ResponseEntity.of(Optional.of(mockWeather1)));
         when(airportAPI.findAirport("KFFC")).thenReturn(ResponseEntity.of(Optional.of(mockAirport1)));
 
-        Optional<List<AirportDTO>> result = underTest.getAll(idents);
+        List<AirportDTO> result = underTest.getAll(idents);
 
-        assertEquals(1, result.get().size());
-        assertEquals("KFFC", result.get().get(0).getIdent());
-        assertEquals("Atlanta Regional Airport - Falcon Field", result.get().get(0).getName());
+        assertEquals(1, result.size());
+        assertEquals("KFFC", result.get(0).getIdent());
+        assertEquals("Atlanta Regional Airport - Falcon Field", result.get(0).getName());
     }
 
     @Test
@@ -89,12 +93,12 @@ class AirportServiceTest {
         when(weatherAPI.findWeather("KAUO")).thenReturn(ResponseEntity.of(Optional.of(mockWeather2)));
         when(airportAPI.findAirport("KAUO")).thenReturn(ResponseEntity.of(Optional.of(mockAirport2)));
 
-        Optional<List<AirportDTO>> result = underTest.getAll(idents);
+        List<AirportDTO> result = underTest.getAll(idents);
 
-        assertEquals(2, result.get().size());
-        assertEquals("KFFC", result.get().get(0).getIdent());
-        assertEquals("Atlanta Regional Airport - Falcon Field", result.get().get(0).getName());
-        assertEquals("KAUO", result.get().get(1).getIdent());
-        assertEquals("Auburn University Regional Airport", result.get().get(1).getName());
+        assertEquals(2, result.size());
+        assertEquals("KFFC", result.get(0).getIdent());
+        assertEquals("Atlanta Regional Airport - Falcon Field", result.get(0).getName());
+        assertEquals("KAUO", result.get(1).getIdent());
+        assertEquals("Auburn University Regional Airport", result.get(1).getName());
     }
 }

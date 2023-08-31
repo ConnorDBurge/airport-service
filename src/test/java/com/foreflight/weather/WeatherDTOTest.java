@@ -102,4 +102,12 @@ class WeatherDTOTest {
         assertNull(dto.getCurrent());
         assertNull(dto.getForecast());
     }
+
+    @Test
+    void noArgsConstructor() {
+        WeatherDTO dto = new WeatherDTO();
+
+        assertNull(dto.getCurrent());
+        assertNull(dto.getForecast());
+    }
 }

@@ -117,4 +117,10 @@ class ForecastDTOTest {
         ForecastDTO forecastDTO = ForecastDTO.builder().build();
         assertNull(forecastDTO.getConditions());
     }
+
+    @Test
+    void noArgsConstructor() {
+        ForecastDTO forecastDTO = new ForecastDTO();
+        assertNull(forecastDTO.getConditions());
+    }
 }

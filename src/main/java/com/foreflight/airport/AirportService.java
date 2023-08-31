@@ -16,18 +16,21 @@ public class AirportService implements AirportServiceInterface {
     private final AirportAPI airportAPI;
     private final WeatherAPI weatherAPI;
 
-    @Override
-    public Optional<List<AirportDTO>> getAll(String idents) {
+    public List<AirportDTO> getAll(String idents) {
         String[] identifiers = idents.split(",");
         List<Airport> airports = new ArrayList<>();
 
         for (String identifier : identifiers) {
-            Weather weather = weatherAPI.findWeather(identifier).getBody();
-            Airport airport = airportAPI.findAirport(identifier).getBody();
-            Objects.requireNonNull(airport).setWeather(weather);
-            airports.add(airport);
+            Optional<Airport> airportOpt = Optional.ofNullable(airportAPI.findAirport(identifier).getBody());
+            Optional<Weather> weatherOpt = Optional.ofNullable(weatherAPI.findWeather(identifier).getBody());
+
+            if (airportOpt.isPresent() && weatherOpt.isPresent()) {
+                Airport airport = airportOpt.get();
+                airport.setWeather(weatherOpt.get());
+                airports.add(airport);
+            }
         }
 
-        return Optional.of(AirportDTO.fromEntities(airports));
+        return AirportDTO.fromEntities(airports);
     }
 }

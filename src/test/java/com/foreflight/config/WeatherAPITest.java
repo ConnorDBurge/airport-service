@@ -1,5 +1,6 @@
 package com.foreflight.config;
 
+import com.foreflight.exception.WeatherNotFoundException;
 import com.foreflight.weather.Weather;
 import com.foreflight.weather.report.Report;
 import com.foreflight.weather.report.current.Current;
@@ -15,7 +16,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
@@ -101,6 +104,21 @@ class WeatherAPITest {
         assertThat(Objects.requireNonNull(actualResponse.getBody()).getReport()
                 .getForecast().getConditions().get(0).getText())
                 .isNotEqualTo("FM301500 05012G20KT P6SM VCSH SCT007 BKN013");
+    }
+
+    @Test
+    void willThrowWeatherNotFoundException() {
+        when(restTemplate.exchange(
+                "apiUrl" + "KFFC",
+                HttpMethod.GET,
+                underTest.getHttpEntity(), Weather.class))
+                .thenThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND));
+
+        try {
+            underTest.findWeather("KFFC");
+        } catch (WeatherNotFoundException e) {
+            assertThat(e.getMessage()).isEqualTo("Weather data not found for identifier: KFFC");
+        }
     }
 
     @Test

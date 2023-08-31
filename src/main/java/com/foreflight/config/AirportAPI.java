@@ -1,6 +1,7 @@
 package com.foreflight.config;
 
 import com.foreflight.airport.Airport;
+import com.foreflight.exception.AirportNotFoundException;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -8,6 +9,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 @Configuration
@@ -39,9 +41,13 @@ public class AirportAPI {
     }
 
     public ResponseEntity<Airport> findAirport(String identifier) {
-        return restTemplate.exchange(
-                this.apiUrl + identifier,
-                HttpMethod.GET,
-                httpEntity, Airport.class);
+        try {
+            return restTemplate.exchange(
+                    this.apiUrl + identifier,
+                    HttpMethod.GET,
+                    httpEntity, Airport.class);
+        } catch (HttpClientErrorException ex) {
+            throw new AirportNotFoundException("Airport data not found for identifier: " + identifier);
+        }
     }
 }

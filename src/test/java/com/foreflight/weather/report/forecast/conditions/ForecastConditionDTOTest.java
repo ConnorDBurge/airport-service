@@ -128,4 +128,13 @@ class ForecastConditionDTOTest {
         assertNull(forecastCondition.getDateStart());
         assertNull(forecastCondition.getTemperature());
     }
+
+    @Test
+    void noArgsConstructor() {
+        ForecastConditionDTO forecastCondition = new ForecastConditionDTO();
+        assertNull(forecastCondition.getText());
+        assertNull(forecastCondition.getWind());
+        assertNull(forecastCondition.getDateStart());
+        assertNull(forecastCondition.getTemperature());
+    }
 }
