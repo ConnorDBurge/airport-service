@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Period {
-
     private String dateStart;
     private String dateEnd;
 }

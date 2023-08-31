@@ -12,8 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
-@Configuration
 @Getter
+@Configuration
 public class AirportAPI {
 
     private final HttpEntity<String> httpEntity;

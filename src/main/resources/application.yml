@@ -8,49 +8,49 @@ spring:
 
 api:
   airport:
-    username: ff-interview
-    password: "@-*KzU.*dtP9dkoE7PryL2ojY!uDV.6JJGC9"
-    url: https://qa.foreflight.com/airports/
+    username: ${AIRPORT_API_USERNAME}
+    password: ${AIRPORT_API_PASSWORD}
+    url: ${AIRPORT_API_URL}
   weather:
-    url: https://qa.foreflight.com/weather/report/
+    url: ${WEATHER_API_URL}
 ---
 ######################################################
 # Local Configuration (Postgres & Docker)
 ######################################################
-spring:
-  config:
-    activate:
-      on-profile: local-postgres
-  datasource:
-    driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:55432/airport_service_db
-    username: postgres
-    password: postgres
-  jpa:
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
-  docker:
-    compose:
-      file: ./compose.yml
-      enabled: true
+#spring:
+#  config:
+#    activate:
+#      on-profile: local-postgres
+#  datasource:
+#    driver-class-name: org.postgresql.Driver
+#    url: jdbc:postgresql://localhost:55432/airport_service_db
+#    username: postgres
+#    password: postgres
+#  jpa:
+#    database-platform: org.hibernate.dialect.PostgreSQLDialect
+#  docker:
+#    compose:
+#      file: ./compose.yml
+#      enabled: true
 
 ---
 ######################################################
 # Local Configuration (H2)
 ######################################################
-spring:
-  config:
-    activate:
-      on-profile: local-h2
-  datasource:
-    driver-class-name: org.h2.Driver
-    url: jdbc:h2:mem:airport_service_db
-    username: root
-    password: root
-  h2:
-    console:
-      enabled: true
-  jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
-  docker:
-    compose:
-      enabled: false
+#spring:
+#  config:
+#    activate:
+#      on-profile: local-h2
+#  datasource:
+#    driver-class-name: org.h2.Driver
+#    url: jdbc:h2:mem:airport_service_db
+#    username: root
+#    password: root
+#  h2:
+#    console:
+#      enabled: true
+#  jpa:
+#    database-platform: org.hibernate.dialect.H2Dialect
+#  docker:
+#    compose:
+#      enabled: false

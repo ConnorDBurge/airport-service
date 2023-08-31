@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ForecastCondition {
-
     private String text;
     private Wind wind;
     private Period period;

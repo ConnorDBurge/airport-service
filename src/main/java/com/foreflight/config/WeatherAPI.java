@@ -1,7 +1,5 @@
 package com.foreflight.config;
 
-import com.foreflight.airport.Airport;
-import com.foreflight.exception.AirportNotFoundException;
 import com.foreflight.exception.WeatherNotFoundException;
 import com.foreflight.weather.Weather;
 import lombok.Getter;
@@ -14,8 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
-@Configuration
 @Getter
+@Configuration
 public class WeatherAPI {
 
     private final HttpEntity<String> httpEntity;
