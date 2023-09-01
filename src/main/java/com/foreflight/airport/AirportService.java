@@ -16,6 +16,7 @@ public class AirportService implements AirportServiceInterface {
     private final AirportAPI airportAPI;
     private final WeatherAPI weatherAPI;
 
+    @Override
     public List<AirportDTO> getAll(String idents) {
         String[] identifiers = idents.split(",");
         List<Airport> airports = new ArrayList<>();
@@ -26,7 +27,9 @@ public class AirportService implements AirportServiceInterface {
 
             if (airportOpt.isPresent() && weatherOpt.isPresent()) {
                 Airport airport = airportOpt.get();
-                airport.setWeather(weatherOpt.get());
+                Weather weather = weatherOpt.get();
+                weather.setIdent(identifier);
+                airport.setWeather(weather);
                 airports.add(airport);
             }
         }
