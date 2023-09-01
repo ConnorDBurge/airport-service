@@ -1,27 +1,26 @@
 package com.foreflight.weather;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.foreflight.external.AirportAPI;
-import com.foreflight.external.WeatherAPI;
+import com.foreflight.TestConfig;
 import com.foreflight.exception.WeatherNotFoundException;
+import com.foreflight.external.WeatherAPI;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
+@Import(TestConfig.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class WeatherControllerExceptionsTest {
 
-    @Autowired
-    private WebTestClient webTestClient;
+    @Autowired private WebTestClient webTestClient;
+    @Autowired private WeatherAPI weatherAPI;
     private final String WEATHER_URI = "/v1/weather/";
-    @MockBean private AirportAPI airportAPI; // External API
-    @MockBean private WeatherAPI weatherAPI; // External API
 
     @Test
     void willThrowWeatherNotFoundException() {
