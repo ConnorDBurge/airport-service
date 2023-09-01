@@ -9,5 +9,4 @@ public class TestAirportServiceApplication {
     public static void main(String[] args) {
         SpringApplication.from(AirportServiceApplication::main).with(TestAirportServiceApplication.class).run(args);
     }
-
 }

@@ -1,14 +1,14 @@
 package com.foreflight.weather;
 
-import com.foreflight.config.AirportAPI;
-import com.foreflight.config.WeatherAPI;
+import com.foreflight.TestConfig;
+import com.foreflight.external.WeatherAPI;
 import com.foreflight.weather.report.Report;
 import com.foreflight.weather.report.current.Current;
 import com.foreflight.weather.report.forecast.Forecast;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -20,14 +20,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+@Import(TestConfig.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class WeatherControllerValidTest {
 
-    @Autowired
-    private WebTestClient webTestClient;
+    @Autowired private WebTestClient webTestClient;
+    @Autowired private WeatherAPI weatherAPI;
     private final String WEATHER_URI = "/v1/weather/";
-    @MockBean private AirportAPI airportAPI; // External API
-    @MockBean private WeatherAPI weatherAPI; // External API
 
     @Test
     void canGetWeather() {

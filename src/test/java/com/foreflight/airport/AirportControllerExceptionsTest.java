@@ -1,14 +1,16 @@
 package com.foreflight.airport;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.foreflight.config.AirportAPI;
-import com.foreflight.config.WeatherAPI;
+import com.foreflight.TestConfig;
+import com.foreflight.external.AirportAPI;
+import com.foreflight.external.WeatherAPI;
 import com.foreflight.exception.AirportNotFoundException;
 import com.foreflight.exception.WeatherNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.reactive.server.WebTestClient;
@@ -16,14 +18,14 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
+@Import(TestConfig.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class AirportControllerExceptionsTest {
 
-    @Autowired
-    private WebTestClient webTestClient;
+    @Autowired private WebTestClient webTestClient;
+    @Autowired private AirportAPI airportAPI;
+    @Autowired private WeatherAPI weatherAPI;
     private final String AIRPORT_URI = "/v1/airports/";
-    @MockBean private AirportAPI airportAPI; // External API
-    @MockBean private WeatherAPI weatherAPI; // External API
 
     @Test
     void willThrowAirportNotFoundException() {

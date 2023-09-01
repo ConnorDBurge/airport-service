@@ -1,6 +1,6 @@
 package com.foreflight.weather;
 
-import com.foreflight.config.WeatherAPI;
+import com.foreflight.external.WeatherAPI;
 import com.foreflight.weather.interfaces.WeatherServiceInterface;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

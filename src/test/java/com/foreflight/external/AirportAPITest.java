@@ -1,9 +1,8 @@
-package com.foreflight.config;
+package com.foreflight.external;
 
 import com.foreflight.airport.Airport;
 import com.foreflight.airport.runway.Runway;
 import com.foreflight.exception.AirportNotFoundException;
-import com.foreflight.exception.WeatherNotFoundException;
 import com.foreflight.weather.Weather;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
