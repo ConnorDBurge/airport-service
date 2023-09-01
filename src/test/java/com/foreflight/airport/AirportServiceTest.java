@@ -1,6 +1,5 @@
 package com.foreflight.airport;
 
-import com.foreflight.TestConfig;
 import com.foreflight.airport.runway.Runway;
 import com.foreflight.external.AirportAPI;
 import com.foreflight.external.WeatherAPI;
@@ -11,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -20,7 +18,6 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
-@Import(TestConfig.class)
 @ExtendWith(MockitoExtension.class)
 class AirportServiceTest {
 
