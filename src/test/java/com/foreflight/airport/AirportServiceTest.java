@@ -1,5 +1,6 @@
 package com.foreflight.airport;
 
+import com.foreflight.TestConfig;
 import com.foreflight.airport.runway.Runway;
 import com.foreflight.external.AirportAPI;
 import com.foreflight.external.WeatherAPI;
@@ -10,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -18,16 +20,17 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
+@Import(TestConfig.class)
 @ExtendWith(MockitoExtension.class)
 class AirportServiceTest {
 
     private AirportService underTest;
-    @Mock private AirportAPI airportAPI;
-    @Mock private WeatherAPI weatherAPI;
+    @Mock private AirportAPI mockAirportAPI;
+    @Mock private WeatherAPI mockWeatherAPI;
 
     @BeforeEach
     void setUp() {
-        underTest = new AirportService(airportAPI, weatherAPI);
+        underTest = new AirportService(mockAirportAPI, mockWeatherAPI);
     }
 
     @Test
@@ -46,8 +49,8 @@ class AirportServiceTest {
                 .longitude(-84.57172F)
                 .build();
 
-        when(weatherAPI.findWeather("KFFC")).thenReturn(ResponseEntity.of(Optional.of(mockWeather1)));
-        when(airportAPI.findAirport("KFFC")).thenReturn(ResponseEntity.of(Optional.of(mockAirport1)));
+        when(mockWeatherAPI.findWeather("KFFC")).thenReturn(ResponseEntity.of(Optional.of(mockWeather1)));
+        when(mockAirportAPI.findAirport("KFFC")).thenReturn(ResponseEntity.of(Optional.of(mockAirport1)));
 
         List<AirportDTO> result = underTest.getAll(idents);
 
@@ -84,10 +87,10 @@ class AirportServiceTest {
                 .longitude(-85.43400F)
                 .build();
 
-        when(weatherAPI.findWeather("KFFC")).thenReturn(ResponseEntity.of(Optional.of(mockWeather1)));
-        when(airportAPI.findAirport("KFFC")).thenReturn(ResponseEntity.of(Optional.of(mockAirport1)));
-        when(weatherAPI.findWeather("KAUO")).thenReturn(ResponseEntity.of(Optional.of(mockWeather2)));
-        when(airportAPI.findAirport("KAUO")).thenReturn(ResponseEntity.of(Optional.of(mockAirport2)));
+        when(mockWeatherAPI.findWeather("KFFC")).thenReturn(ResponseEntity.of(Optional.of(mockWeather1)));
+        when(mockAirportAPI.findAirport("KFFC")).thenReturn(ResponseEntity.of(Optional.of(mockAirport1)));
+        when(mockWeatherAPI.findWeather("KAUO")).thenReturn(ResponseEntity.of(Optional.of(mockWeather2)));
+        when(mockAirportAPI.findAirport("KAUO")).thenReturn(ResponseEntity.of(Optional.of(mockAirport2)));
 
         List<AirportDTO> result = underTest.getAll(idents);
 

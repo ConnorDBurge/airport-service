@@ -19,11 +19,11 @@ import static org.mockito.Mockito.when;
 class WeatherServiceTest {
 
     private WeatherService underTest;
-    @Mock private WeatherAPI weatherAPI;
+    @Mock private WeatherAPI mockWeatherAPI;
 
     @BeforeEach
     void setUp() {
-        underTest = new WeatherService(weatherAPI);
+        underTest = new WeatherService(mockWeatherAPI);
     }
 
     @Test
@@ -35,7 +35,7 @@ class WeatherServiceTest {
                 .report(Report.builder().build())
                 .build();
 
-        when(weatherAPI.findWeather("KFFC")).thenReturn(ResponseEntity.of(Optional.of(mockWeather1)));
+        when(mockWeatherAPI.findWeather("KFFC")).thenReturn(ResponseEntity.of(Optional.of(mockWeather1)));
 
         List<WeatherDTO> result = underTest.getAll(idents);
 
@@ -57,8 +57,8 @@ class WeatherServiceTest {
                 .report(Report.builder().build())
                 .build();
 
-        when(weatherAPI.findWeather("KFFC")).thenReturn(ResponseEntity.of(Optional.of(mockWeather1)));
-        when(weatherAPI.findWeather("KATL")).thenReturn(ResponseEntity.of(Optional.of(mockWeather2)));
+        when(mockWeatherAPI.findWeather("KFFC")).thenReturn(ResponseEntity.of(Optional.of(mockWeather1)));
+        when(mockWeatherAPI.findWeather("KATL")).thenReturn(ResponseEntity.of(Optional.of(mockWeather2)));
 
         List<WeatherDTO> result = underTest.getAll(idents);
 
