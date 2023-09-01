@@ -5,8 +5,6 @@ import com.foreflight.airport.runway.RunwayDTO;
 import com.foreflight.weather.Weather;
 import com.foreflight.weather.WeatherDTO;
 import com.foreflight.weather.report.Report;
-import com.foreflight.weather.report.current.Current;
-import com.foreflight.weather.report.forecast.Forecast;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,7 +13,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 @ExtendWith(MockitoExtension.class)
 class AirportDTOTest {
@@ -46,7 +45,9 @@ class AirportDTOTest {
                 .latitude(33.35725F)
                 .longitude(-84.57172F)
                 .runways(List.of(runwayEntity))
-                .weather(Weather.builder().report(report).build())
+                .weather(Weather.builder()
+                        .ident("KFFC")
+                        .report(report).build())
                 .build();
         AirportDTO airportDTO = AirportDTO.fromEntity(airport);
         assertEquals("KFFC", airportDTO.getIdent());
@@ -61,7 +62,9 @@ class AirportDTOTest {
                 .latitude(33.35725F)
                 .longitude(-84.57172F)
                 .runways(List.of(runwayEntity))
-                .weather(Weather.builder().report(report).build())
+                .weather(Weather.builder()
+                        .ident("KFFC")
+                        .report(report).build())
                 .build();
         Airport kauo = Airport.builder()
                 .icao("KAUO")
@@ -69,7 +72,9 @@ class AirportDTOTest {
                 .latitude(32.61575F)
                 .longitude(-85.43400F)
                 .runways(List.of(runwayEntity))
-                .weather(Weather.builder().report(report).build())
+                .weather(Weather.builder()
+                        .ident("KAUO")
+                        .report(report).build())
                 .build();
 
         List<AirportDTO> airportDTOs = AirportDTO.fromEntities(List.of(kffc, kauo));

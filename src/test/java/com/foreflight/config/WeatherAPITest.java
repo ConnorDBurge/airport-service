@@ -42,8 +42,8 @@ class WeatherAPITest {
 
     @Test
     void findWeather() {
-        ResponseEntity<Weather> expectedResponse = ResponseEntity.ok(new Weather(
-                Report.builder()
+        ResponseEntity<Weather> expectedResponse = ResponseEntity.ok(Weather.builder()
+                .report(Report.builder()
                         .current(Current.builder()
                                 .ident("KFFC")
                                 .temperature(1.0)
@@ -74,8 +74,8 @@ class WeatherAPITest {
                                                 .build()
                                 ))
                                 .build())
-                        .build()
-        ));
+                        .build())
+                .build());
 
         when(restTemplate.exchange(
                 "apiUrl" + "KFFC",

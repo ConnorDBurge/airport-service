@@ -24,6 +24,7 @@ class ForecastDTOTest {
     @BeforeEach
     void setUp() {
         underTest = ForecastDTO.builder()
+                .ident("KFFC")
                 .conditions(conditions)
                 .build();
     }
@@ -31,6 +32,7 @@ class ForecastDTOTest {
     @Test
     void fromEntity_Dto_Returns_Next_Two_Forecast_Conditions() {
         Forecast mockForecast = Forecast.builder()
+                .ident("KFFC")
                 .conditions(List.of(ForecastCondition.builder()
                                 .period(Period.builder()
                                         .dateStart("2023-08-30T18:00:00+0000")
@@ -70,6 +72,7 @@ class ForecastDTOTest {
     @Test
     void fromEntity_Dto_Returns_One_Forecast_Condition() {
         Forecast mockForecast = Forecast.builder()
+                .ident("KFFC")
                 .conditions(List.of(ForecastCondition.builder()
                                 .period(Period.builder()
                                         .dateStart("2023-08-30T18:00:00+0000")
