@@ -16,6 +16,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -31,7 +32,7 @@ class WeatherControllerValidTest {
         String ident = "KFFC";
 
         Weather mockedWeather = Weather.builder()
-                .ident(ident)
+                .ident("KFFC")
                 .report(Report.builder()
                         .current(Current.builder().build())
                         .forecast(Forecast.builder()
@@ -53,6 +54,8 @@ class WeatherControllerValidTest {
                 })
                 .returnResult()
                 .getResponseBody();
+
+        verify(weatherAPI).findWeather(ident);
 
         assertThat(weather).hasSize(1);
         WeatherDTO returnedWeather = weather.get(0);
@@ -99,6 +102,9 @@ class WeatherControllerValidTest {
                 })
                 .returnResult()
                 .getResponseBody();
+
+        verify(weatherAPI).findWeather("KFFC");
+        verify(weatherAPI).findWeather("KATL");
 
         assertThat(weather).hasSize(2);
         WeatherDTO returnedWeather1 = weather.get(0);

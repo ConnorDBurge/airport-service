@@ -11,7 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class WeatherControllerExceptionsTest {
@@ -35,6 +35,7 @@ class WeatherControllerExceptionsTest {
                 .isNotFound() // Expecting 404 status due to the WeatherNotFoundException
                 .expectBody(JsonNode.class) // Expecting a JSON response
                 .value(response -> {
+                    verify(weatherAPI, times(1)).findWeather(ident);
                     assertThat(response.get("statusCode").asInt()).isEqualTo(404);
                     assertThat(response.get("message").asText()).isEqualTo("Weather data not found for identifier: " + ident);
                 });

@@ -19,7 +19,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class AirportControllerValidTest {
@@ -67,6 +67,9 @@ public class AirportControllerValidTest {
                 })
                 .returnResult()
                 .getResponseBody();
+
+        verify(airportAPI, times(1)).findAirport(ident);
+        verify(weatherAPI, times(1)).findWeather(ident);
 
         assertThat(airports).hasSize(1);
         AirportDTO returnedAirport = airports.get(0);
@@ -132,6 +135,9 @@ public class AirportControllerValidTest {
                 })
                 .returnResult()
                 .getResponseBody();
+
+        verify(airportAPI, times(2)).findAirport(anyString());
+        verify(weatherAPI, times(2)).findWeather(anyString());
 
         assertThat(airports).hasSize(2);
         AirportDTO kffc = airports.get(0);

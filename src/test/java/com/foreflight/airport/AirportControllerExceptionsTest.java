@@ -14,7 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class AirportControllerExceptionsTest {
@@ -29,7 +29,7 @@ public class AirportControllerExceptionsTest {
     void willThrowAirportNotFoundException() {
         String ident = "INVALID_AIRPORT";
 
-        when(airportAPI.findAirport(ident)).thenThrow(new AirportNotFoundException("Airport not found for identifier: " + ident));
+        when(airportAPI.findAirport(ident)).thenThrow(new AirportNotFoundException("Airport data not found for identifier: " + ident));
 
         webTestClient.get()
                 .uri(AIRPORT_URI + ident)
@@ -39,8 +39,10 @@ public class AirportControllerExceptionsTest {
                 .isNotFound() // Expecting 404 status due to the AirportNotFoundException
                 .expectBody(JsonNode.class) // Expecting a JSON response
                 .value(response -> {
+                    verify(airportAPI, times(1)).findAirport(ident);
+                    verify(weatherAPI, times(0)).findWeather(ident);
                     assertThat(response.get("statusCode").asInt()).isEqualTo(404);
-                    assertThat(response.get("message").asText()).isEqualTo("Airport not found for identifier: " + ident);
+                    assertThat(response.get("message").asText()).isEqualTo("Airport data not found for identifier: " + ident);
                 });
     }
 
@@ -62,6 +64,8 @@ public class AirportControllerExceptionsTest {
                 .isNotFound() // Expecting 404 status due to the WeatherNotFoundException
                 .expectBody(JsonNode.class) // Expecting a JSON response
                 .value(response -> {
+                    verify(airportAPI, times(1)).findAirport(ident);
+                    verify(weatherAPI, times(1)).findWeather(ident);
                     assertThat(response.get("statusCode").asInt()).isEqualTo(404);
                     assertThat(response.get("message").asText()).isEqualTo("Weather data not found for identifier: " + ident);
                 });
