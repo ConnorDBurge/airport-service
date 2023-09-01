@@ -1,4 +1,4 @@
-package com.foreflight.config;
+package com.foreflight.external;
 
 import com.foreflight.exception.WeatherNotFoundException;
 import com.foreflight.weather.Weather;

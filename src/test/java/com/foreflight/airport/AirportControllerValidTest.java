@@ -1,8 +1,8 @@
 package com.foreflight.airport;
 
 import com.foreflight.airport.runway.Runway;
-import com.foreflight.config.AirportAPI;
-import com.foreflight.config.WeatherAPI;
+import com.foreflight.external.AirportAPI;
+import com.foreflight.external.WeatherAPI;
 import com.foreflight.weather.Weather;
 import com.foreflight.weather.report.Report;
 import com.foreflight.weather.report.current.Current;

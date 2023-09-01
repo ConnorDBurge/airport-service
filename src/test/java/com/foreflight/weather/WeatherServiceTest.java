@@ -1,6 +1,6 @@
 package com.foreflight.weather;
 
-import com.foreflight.config.WeatherAPI;
+import com.foreflight.external.WeatherAPI;
 import com.foreflight.weather.report.Report;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
