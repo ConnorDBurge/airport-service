@@ -1,39 +1,61 @@
 package com.foreflight.airport;
 
-import com.foreflight.config.WebTestClientConfig;
-import org.junit.jupiter.api.BeforeEach;
+import com.foreflight.airport.runway.Runway;
+import com.foreflight.config.AirportAPI;
+import com.foreflight.config.WeatherAPI;
+import com.foreflight.weather.Weather;
+import com.foreflight.weather.report.Report;
+import com.foreflight.weather.report.current.Current;
+import com.foreflight.weather.report.forecast.Forecast;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.context.annotation.Import;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
-@Import(WebTestClientConfig.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class AirportControllerValidTest {
 
     @Autowired
     private WebTestClient webTestClient;
     private final String AIRPORT_URI = "/v1/airports/";
-
-    @LocalServerPort
-    private int port;
-
-    @BeforeEach
-    public void setup() {
-        this.webTestClient = WebTestClient.bindToServer().baseUrl("http://localhost:" + port).build();
-    }
+    @MockBean private AirportAPI airportAPI; // External API
+    @MockBean private WeatherAPI weatherAPI; // External API
 
     @Test
     void canGetAirport() {
         String ident = "KFFC";
+
+        Weather mockedWeather = Weather.builder()
+                .ident(ident)
+                .report(Report.builder()
+                        .current(Current.builder().build())
+                        .forecast(Forecast.builder()
+                                .ident("KATL")
+                                .build())
+                        .build())
+                .build();
+
+        Airport mockedAirport = Airport.builder()
+                .icao("KFFC")
+                .name("Atlanta Regional Falcon Field")
+                .runways(List.of(Runway.builder().build()))
+                .weather(mockedWeather)
+                .build();
+
+        ResponseEntity<Airport> airportResponse = ResponseEntity.ok(mockedAirport);
+        ResponseEntity<Weather> weatherResponse = ResponseEntity.ok(mockedWeather);
+
+        when(airportAPI.findAirport(ident)).thenReturn(airportResponse);
+        when(weatherAPI.findWeather(ident)).thenReturn(weatherResponse);
 
         List<AirportDTO> airports = webTestClient.get()
                 .uri(AIRPORT_URI + ident)
@@ -55,6 +77,50 @@ public class AirportControllerValidTest {
     @Test
     void canGetMultipleAirports() {
         String idents = "KFFC,KATL";
+
+        Weather mockedWeather1 = Weather.builder()
+                .ident("KFFC")
+                .report(Report.builder()
+                        .current(Current.builder().build())
+                        .forecast(Forecast.builder()
+                                .ident("KATL")
+                                .build())
+                        .build())
+                .build();
+
+        Airport mockedAirport1 = Airport.builder()
+                .icao("KFFC")
+                .name("Atlanta Regional Falcon Field")
+                .runways(List.of(Runway.builder().build()))
+                .weather(mockedWeather1)
+                .build();
+
+        Weather mockedWeather2 = Weather.builder()
+                .ident("KATL")
+                .report(Report.builder()
+                        .current(Current.builder().build())
+                        .forecast(Forecast.builder()
+                                .ident("KATL")
+                                .build())
+                        .build())
+                .build();
+
+        Airport mockedAirport2 = Airport.builder()
+                .icao("KATL")
+                .name("Hartsfield - Jackson Atlanta International")
+                .runways(List.of(Runway.builder().build()))
+                .weather(mockedWeather2)
+                .build();
+
+        ResponseEntity<Airport> airportResponse1 = ResponseEntity.ok(mockedAirport1);
+        ResponseEntity<Airport> airportResponse2 = ResponseEntity.ok(mockedAirport2);
+        ResponseEntity<Weather> weatherResponse1 = ResponseEntity.ok(mockedWeather1);
+        ResponseEntity<Weather> weatherResponse2 = ResponseEntity.ok(mockedWeather2);
+
+        when(airportAPI.findAirport("KFFC")).thenReturn(airportResponse1);
+        when(airportAPI.findAirport("KATL")).thenReturn(airportResponse2);
+        when(weatherAPI.findWeather("KFFC")).thenReturn(weatherResponse1);
+        when(weatherAPI.findWeather("KATL")).thenReturn(weatherResponse2);
 
         List<AirportDTO> airports = webTestClient.get()
                 .uri(AIRPORT_URI + idents)

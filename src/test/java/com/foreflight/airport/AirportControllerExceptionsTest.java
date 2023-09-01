@@ -3,16 +3,12 @@ package com.foreflight.airport;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.foreflight.config.AirportAPI;
 import com.foreflight.config.WeatherAPI;
-import com.foreflight.config.WebTestClientConfig;
 import com.foreflight.exception.AirportNotFoundException;
 import com.foreflight.exception.WeatherNotFoundException;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.reactive.server.WebTestClient;
@@ -20,23 +16,14 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
-@Import(WebTestClientConfig.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class AirportControllerExceptionsTest {
 
     @Autowired
     private WebTestClient webTestClient;
     private final String AIRPORT_URI = "/v1/airports/";
-    @MockBean private AirportAPI airportAPI;
-    @MockBean private WeatherAPI weatherAPI;
-
-    @LocalServerPort
-    private int port;
-
-    @BeforeEach
-    public void setup() {
-        this.webTestClient = WebTestClient.bindToServer().baseUrl("http://localhost:" + port).build();
-    }
+    @MockBean private AirportAPI airportAPI; // External API
+    @MockBean private WeatherAPI weatherAPI; // External API
 
     @Test
     void willThrowAirportNotFoundException() {
@@ -61,7 +48,7 @@ public class AirportControllerExceptionsTest {
     void willThrowWeatherNotFoundException() {
         String ident = "INVALID_AIRPORT";
 
-        Airport mockedAirport = new Airport();
+        Airport mockedAirport = Airport.builder().build();
         ResponseEntity<Airport> airportResponse = ResponseEntity.ok(mockedAirport);
 
         when(airportAPI.findAirport(ident)).thenReturn(airportResponse);

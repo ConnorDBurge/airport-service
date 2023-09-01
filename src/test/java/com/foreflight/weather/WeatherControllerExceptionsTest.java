@@ -1,37 +1,31 @@
 package com.foreflight.weather;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.foreflight.config.WebTestClientConfig;
-import org.junit.jupiter.api.BeforeEach;
+import com.foreflight.config.WeatherAPI;
+import com.foreflight.exception.WeatherNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.context.annotation.Import;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
-@Import(WebTestClientConfig.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class WeatherControllerExceptionsTest {
 
     @Autowired
     private WebTestClient webTestClient;
     private final String WEATHER_URI = "/v1/weather/";
-
-    @LocalServerPort
-    private int port;
-
-    @BeforeEach
-    public void setup() {
-        this.webTestClient = WebTestClient.bindToServer().baseUrl("http://localhost:" + port).build();
-    }
+    @MockBean private WeatherAPI weatherAPI; // External API
 
     @Test
     void willThrowWeatherNotFoundException() {
         String ident = "INVALID_AIRPORT";
+
+        when(weatherAPI.findWeather(ident)).thenThrow(new WeatherNotFoundException("Weather data not found for identifier: " + ident));
 
         webTestClient.get()
                 .uri(WEATHER_URI + ident)

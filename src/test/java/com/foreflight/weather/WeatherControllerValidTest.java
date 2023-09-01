@@ -1,39 +1,47 @@
 package com.foreflight.weather;
 
-import com.foreflight.config.WebTestClientConfig;
-import org.junit.jupiter.api.BeforeEach;
+import com.foreflight.config.WeatherAPI;
+import com.foreflight.weather.report.Report;
+import com.foreflight.weather.report.current.Current;
+import com.foreflight.weather.report.forecast.Forecast;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.context.annotation.Import;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
-@Import(WebTestClientConfig.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class WeatherControllerValidTest {
 
     @Autowired
     private WebTestClient webTestClient;
     private final String WEATHER_URI = "/v1/weather/";
-
-    @LocalServerPort
-    private int port;
-
-    @BeforeEach
-    public void setup() {
-        this.webTestClient = WebTestClient.bindToServer().baseUrl("http://localhost:" + port).build();
-    }
+    @MockBean private WeatherAPI weatherAPI; // External API
 
     @Test
     void canGetWeather() {
         String ident = "KFFC";
+
+        Weather mockedWeather = Weather.builder()
+                .ident(ident)
+                .report(Report.builder()
+                        .current(Current.builder().build())
+                        .forecast(Forecast.builder()
+                                .ident("KATL")
+                                .build())
+                        .build())
+                .build();
+
+        ResponseEntity<Weather> weatherResponse = ResponseEntity.ok(mockedWeather);
+        when(weatherAPI.findWeather(ident)).thenReturn(weatherResponse);
 
         List<WeatherDTO> weather = webTestClient.get()
                 .uri(WEATHER_URI + ident)
@@ -54,6 +62,32 @@ class WeatherControllerValidTest {
     @Test
     void canGetWeatherForMultipleAirports() {
         String idents = "KFFC,KATL";
+
+        Weather mockedWeather1 = Weather.builder()
+                .ident("KFFC")
+                .report(Report.builder()
+                        .current(Current.builder().build())
+                        .forecast(Forecast.builder()
+                                .ident("KATL")
+                                .build())
+                        .build())
+                .build();
+
+        Weather mockedWeather2 = Weather.builder()
+                .ident("KATL")
+                .report(Report.builder()
+                        .current(Current.builder().build())
+                        .forecast(Forecast.builder()
+                                .ident("KATL")
+                                .build())
+                        .build())
+                .build();
+
+        ResponseEntity<Weather> weatherResponse1 = ResponseEntity.ok(mockedWeather1);
+        ResponseEntity<Weather> weatherResponse2 = ResponseEntity.ok(mockedWeather2);
+
+        when(weatherAPI.findWeather("KFFC")).thenReturn(weatherResponse1);
+        when(weatherAPI.findWeather("KATL")).thenReturn(weatherResponse2);
 
         List<WeatherDTO> weather = webTestClient.get()
                 .uri(WEATHER_URI + idents)
