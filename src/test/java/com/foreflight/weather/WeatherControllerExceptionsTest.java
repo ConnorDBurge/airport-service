@@ -1,6 +1,7 @@
 package com.foreflight.weather;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.foreflight.config.AirportAPI;
 import com.foreflight.config.WeatherAPI;
 import com.foreflight.exception.WeatherNotFoundException;
 import org.junit.jupiter.api.Test;
@@ -19,6 +20,7 @@ class WeatherControllerExceptionsTest {
     @Autowired
     private WebTestClient webTestClient;
     private final String WEATHER_URI = "/v1/weather/";
+    @MockBean private AirportAPI airportAPI; // External API
     @MockBean private WeatherAPI weatherAPI; // External API
 
     @Test

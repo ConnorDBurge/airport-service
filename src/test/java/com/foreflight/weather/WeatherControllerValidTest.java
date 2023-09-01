@@ -1,5 +1,6 @@
 package com.foreflight.weather;
 
+import com.foreflight.config.AirportAPI;
 import com.foreflight.config.WeatherAPI;
 import com.foreflight.weather.report.Report;
 import com.foreflight.weather.report.current.Current;
@@ -25,6 +26,7 @@ class WeatherControllerValidTest {
     @Autowired
     private WebTestClient webTestClient;
     private final String WEATHER_URI = "/v1/weather/";
+    @MockBean private AirportAPI airportAPI; // External API
     @MockBean private WeatherAPI weatherAPI; // External API
 
     @Test
