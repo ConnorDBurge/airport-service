@@ -1,9 +1,7 @@
-package com.foreflight.airport;
+package com.foreflight.weather;
 
-import com.foreflight.airport.runway.Runway;
 import com.foreflight.config.AirportAPI;
 import com.foreflight.config.WeatherAPI;
-import com.foreflight.weather.Weather;
 import com.foreflight.weather.report.Report;
 import com.foreflight.weather.report.current.Current;
 import com.foreflight.weather.report.forecast.Forecast;
@@ -19,23 +17,24 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class AirportControllerValidTest {
+class WeatherControllerValidTest {
 
     @Autowired
     private WebTestClient webTestClient;
-    private final String AIRPORT_URI = "/v1/airports/";
+    private final String WEATHER_URI = "/v1/weather/";
     @MockBean private AirportAPI airportAPI; // External API
     @MockBean private WeatherAPI weatherAPI; // External API
 
     @Test
-    void canGetAirport() {
+    void canGetWeather() {
         String ident = "KFFC";
 
         Weather mockedWeather = Weather.builder()
-                .ident(ident)
+                .ident("KFFC")
                 .report(Report.builder()
                         .current(Current.builder().build())
                         .forecast(Forecast.builder()
@@ -44,41 +43,29 @@ public class AirportControllerValidTest {
                         .build())
                 .build();
 
-        Airport mockedAirport = Airport.builder()
-                .icao("KFFC")
-                .name("Atlanta Regional Falcon Field")
-                .runways(List.of(Runway.builder().build()))
-                .weather(mockedWeather)
-                .build();
-
-        ResponseEntity<Airport> airportResponse = ResponseEntity.ok(mockedAirport);
         ResponseEntity<Weather> weatherResponse = ResponseEntity.ok(mockedWeather);
-
-        when(airportAPI.findAirport(ident)).thenReturn(airportResponse);
         when(weatherAPI.findWeather(ident)).thenReturn(weatherResponse);
 
-        List<AirportDTO> airports = webTestClient.get()
-                .uri(AIRPORT_URI + ident)
+        List<WeatherDTO> weather = webTestClient.get()
+                .uri(WEATHER_URI + ident)
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange()
                 .expectStatus()
                 .isOk()
-                .expectBodyList(new ParameterizedTypeReference<AirportDTO>() {
+                .expectBodyList(new ParameterizedTypeReference<WeatherDTO>() {
                 })
                 .returnResult()
                 .getResponseBody();
 
-        verify(airportAPI, times(1)).findAirport(ident);
-        verify(weatherAPI, times(1)).findWeather(ident);
+        verify(weatherAPI).findWeather(ident);
 
-        assertThat(airports).hasSize(1);
-        AirportDTO returnedAirport = airports.get(0);
-        assertThat(returnedAirport.getIdent()).isEqualTo(ident);
-        assertThat(returnedAirport.getName()).isEqualTo("Atlanta Regional Falcon Field");
+        assertThat(weather).hasSize(1);
+        WeatherDTO returnedWeather = weather.get(0);
+        assertThat(returnedWeather.getIdent()).isEqualTo(ident);
     }
 
     @Test
-    void canGetMultipleAirports() {
+    void canGetWeatherForMultipleAirports() {
         String idents = "KFFC,KATL";
 
         Weather mockedWeather1 = Weather.builder()
@@ -91,13 +78,6 @@ public class AirportControllerValidTest {
                         .build())
                 .build();
 
-        Airport mockedAirport1 = Airport.builder()
-                .icao("KFFC")
-                .name("Atlanta Regional Falcon Field")
-                .runways(List.of(Runway.builder().build()))
-                .weather(mockedWeather1)
-                .build();
-
         Weather mockedWeather2 = Weather.builder()
                 .ident("KATL")
                 .report(Report.builder()
@@ -108,43 +88,30 @@ public class AirportControllerValidTest {
                         .build())
                 .build();
 
-        Airport mockedAirport2 = Airport.builder()
-                .icao("KATL")
-                .name("Hartsfield - Jackson Atlanta International")
-                .runways(List.of(Runway.builder().build()))
-                .weather(mockedWeather2)
-                .build();
-
-        ResponseEntity<Airport> airportResponse1 = ResponseEntity.ok(mockedAirport1);
-        ResponseEntity<Airport> airportResponse2 = ResponseEntity.ok(mockedAirport2);
         ResponseEntity<Weather> weatherResponse1 = ResponseEntity.ok(mockedWeather1);
         ResponseEntity<Weather> weatherResponse2 = ResponseEntity.ok(mockedWeather2);
 
-        when(airportAPI.findAirport("KFFC")).thenReturn(airportResponse1);
-        when(airportAPI.findAirport("KATL")).thenReturn(airportResponse2);
         when(weatherAPI.findWeather("KFFC")).thenReturn(weatherResponse1);
         when(weatherAPI.findWeather("KATL")).thenReturn(weatherResponse2);
 
-        List<AirportDTO> airports = webTestClient.get()
-                .uri(AIRPORT_URI + idents)
+        List<WeatherDTO> weather = webTestClient.get()
+                .uri(WEATHER_URI + idents)
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange()
                 .expectStatus()
                 .isOk()
-                .expectBodyList(new ParameterizedTypeReference<AirportDTO>() {
+                .expectBodyList(new ParameterizedTypeReference<WeatherDTO>() {
                 })
                 .returnResult()
                 .getResponseBody();
 
-        verify(airportAPI, times(2)).findAirport(anyString());
-        verify(weatherAPI, times(2)).findWeather(anyString());
+        verify(weatherAPI).findWeather("KFFC");
+        verify(weatherAPI).findWeather("KATL");
 
-        assertThat(airports).hasSize(2);
-        AirportDTO kffc = airports.get(0);
-        assertThat(kffc.getIdent()).isEqualTo("KFFC");
-        assertThat(kffc.getName()).isEqualTo("Atlanta Regional Falcon Field");
-        AirportDTO katl = airports.get(1);
-        assertThat(katl.getIdent()).isEqualTo("KATL");
-        assertThat(katl.getName()).isEqualTo("Hartsfield - Jackson Atlanta International");
+        assertThat(weather).hasSize(2);
+        WeatherDTO returnedWeather1 = weather.get(0);
+        assertThat(returnedWeather1.getIdent()).isEqualTo("KFFC");
+        WeatherDTO returnedWeather2 = weather.get(1);
+        assertThat(returnedWeather2.getIdent()).isEqualTo("KATL");
     }
 }

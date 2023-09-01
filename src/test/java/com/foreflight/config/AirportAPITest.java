@@ -27,7 +27,8 @@ import static org.mockito.Mockito.when;
 class AirportAPITest {
 
     private AirportAPI underTest;
-    @Mock private RestTemplate restTemplate;
+    @Mock
+    private RestTemplate restTemplate;
 
     @BeforeEach
     void setUp() {
@@ -36,15 +37,11 @@ class AirportAPITest {
 
     @Test
     void findAirport() {
-        ResponseEntity<Airport> expectedResponse = ResponseEntity.ok(
-                new Airport(
-                        "KFFC",
-                        "Atlanta Regional Airport - Falcon Field",
-                        1.0f,
-                        2.0f,
-                        List.of(new Runway()),
-                        new Weather()
-                ));
+        ResponseEntity<Airport> expectedResponse = ResponseEntity.ok(Airport.builder()
+                .icao("KFFC")
+                .runways(List.of(Runway.builder().build()))
+                .weather(Weather.builder().build())
+                .build());
 
         when(restTemplate.exchange(
                 "apiUrl" + "KFFC",
