@@ -1,9 +1,6 @@
 package com.foreflight.airport.runway;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
 @Builder
@@ -13,4 +10,8 @@ public class Runway {
     private String ident;
     private String name;
     private String recipName;
+    private Integer magneticHeading;
+    private Integer recipMagneticHeading;
+    @Setter private Double crossWind;
+    @Setter private Double headWind;
 }

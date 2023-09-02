@@ -1,13 +1,18 @@
 package com.foreflight.airport;
 
 import com.foreflight.airport.interfaces.AirportServiceInterface;
+import com.foreflight.airport.runway.Runway;
 import com.foreflight.external.AirportAPI;
 import com.foreflight.external.WeatherAPI;
+import com.foreflight.util.WindCalculator;
 import com.foreflight.weather.Weather;
+import com.foreflight.weather.report.current.wind.Wind;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+
+import static com.foreflight.util.WindCalculator.calculateWindComponents;
 
 @Service
 @RequiredArgsConstructor
@@ -30,6 +35,7 @@ public class AirportService implements AirportServiceInterface {
                 Weather weather = weatherOpt.get();
                 weather.setIdent(identifier);
                 airport.setWeather(weather);
+                calculateWindComponents(airport);
                 airports.add(airport);
             }
         }
