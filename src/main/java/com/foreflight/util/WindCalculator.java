@@ -2,6 +2,7 @@ package com.foreflight.util;
 
 import com.foreflight.airport.Airport;
 import com.foreflight.airport.runway.Runway;
+import com.foreflight.weather.report.current.Current;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.stereotype.Component;
@@ -45,7 +46,8 @@ public class WindCalculator {
 
     /**
      * Marks the best runways for landing and takeoff
-     * @param runways the runways to mark
+     *
+     * @param runways     the runways to mark
      * @param maxHeadWind the maximum headwind
      */
     public static void markBestRunways(List<Runway> runways, double maxHeadWind) {
@@ -56,10 +58,14 @@ public class WindCalculator {
 
     /**
      * Calculates the crosswind and headwind components for each runway
+     *
      * @param airport the airport to calculate the wind components for
      */
     public static void calculateWindComponents(Airport airport) {
-        if (airport.getWeather().getReport().getCurrent() == null) {
+        Current current = airport.getWeather().getReport().getCurrent();
+        if (current == null ||
+                current.getWind().getSpeedKts() == null ||
+                current.getWind().getFrom() == null) {
             for (Runway runway : airport.getRunways()) {
                 runway.setCrossWind(null);
                 runway.setHeadWind(null);
