@@ -17,10 +17,8 @@ public class Airport {
     private String name;
     private Double latitude;
     private Double longitude;
-    private List<Runway> runways;
-    @Setter
-    private Weather weather;
-    private Integer magneticVariationEast;
+    @Setter private List<Runway> runways;
+    @Setter private Weather weather;
     @JsonProperty("magneticVariationWest")
     private Integer magneticVariation;
 }

@@ -13,7 +13,7 @@ public class RunwayDTO {
     private String ident;
     private String name;
     private Integer magneticHeading;
-    private Double crossWindR;
+    private Double crossWind;
     private Double headWind;
     private boolean bestRunway;
 
@@ -22,7 +22,7 @@ public class RunwayDTO {
                 .ident(runway.getIdent())
                 .name(runway.getName())
                 .magneticHeading(runway.getMagneticHeading())
-                .crossWindR(runway.getCrossWindR())
+                .crossWind(runway.getCrossWind())
                 .headWind(runway.getHeadWind())
                 .bestRunway(runway.isBestRunway())
                 .build();

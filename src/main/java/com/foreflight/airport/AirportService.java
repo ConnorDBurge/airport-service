@@ -1,16 +1,15 @@
 package com.foreflight.airport;
 
 import com.foreflight.airport.interfaces.AirportServiceInterface;
-import com.foreflight.airport.runway.Runway;
 import com.foreflight.external.AirportAPI;
 import com.foreflight.external.WeatherAPI;
-import com.foreflight.util.WindCalculator;
 import com.foreflight.weather.Weather;
-import com.foreflight.weather.report.current.wind.Wind;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 import static com.foreflight.util.WindCalculator.calculateWindComponents;
 

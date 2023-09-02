@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class WindCalculator {
@@ -43,20 +44,31 @@ public class WindCalculator {
     }
 
     /**
+     * Marks the best runways for landing and takeoff
+     * @param runways the runways to mark
+     * @param maxHeadWind the maximum headwind
+     */
+    public static void markBestRunways(List<Runway> runways, double maxHeadWind) {
+        for (Runway runway : runways) {
+            runway.setBestRunway(runway.getHeadWind() != null && runway.getHeadWind() == maxHeadWind);
+        }
+    }
+
+    /**
      * Calculates the crosswind and headwind components for each runway
      * @param airport the airport to calculate the wind components for
      */
     public static void calculateWindComponents(Airport airport) {
         if (airport.getWeather().getReport().getCurrent() == null) {
             for (Runway runway : airport.getRunways()) {
-                runway.setCrossWindR(null);
+                runway.setCrossWind(null);
                 runway.setHeadWind(null);
             }
             return;
         }
 
         List<Runway> runways = airport.getRunways();
-        List<Runway> recipRunways = new ArrayList<>();
+        List<Runway> recipRunways = new ArrayList<>(runways);
         double maxHeadWind = Double.NEGATIVE_INFINITY;
         for (Runway runway : runways) {
             WindComponents windComponents = calculateWindComponents(
@@ -65,7 +77,7 @@ public class WindCalculator {
                     runway.getMagneticHeading(),
                     airport.getMagneticVariation());
 
-            runway.setCrossWindR(windComponents.getCrossWind());
+            runway.setCrossWind(windComponents.getCrossWind());
             runway.setHeadWind(windComponents.getHeadWind());
 
             WindCalculator.WindComponents recipWindComponents = WindCalculator.calculateWindComponents(
@@ -78,7 +90,7 @@ public class WindCalculator {
                     .ident(runway.getIdent().replaceAll("(\\d+)-(\\d+)", "$2-$1"))
                     .name(runway.getRecipName())
                     .magneticHeading(runway.getRecipMagneticHeading())
-                    .crossWindR(recipWindComponents.getCrossWind())
+                    .crossWind(recipWindComponents.getCrossWind())
                     .headWind(recipWindComponents.getHeadWind())
                     .build());
 
@@ -86,18 +98,8 @@ public class WindCalculator {
                 maxHeadWind = Math.max(maxHeadWind, runway.getHeadWind());
             }
         }
-        runways.addAll(recipRunways);
-        markBestRunways(runways, maxHeadWind);
-    }
 
-    /**
-     * Marks the best runways for landing and takeoff
-     * @param runways the runways to mark
-     * @param maxHeadWind the maximum headwind
-     */
-    public static void markBestRunways(List<Runway> runways, double maxHeadWind) {
-        for (Runway runway : runways) {
-            runway.setBestRunway(runway.getHeadWind() != null && runway.getHeadWind() == maxHeadWind);
-        }
+        markBestRunways(recipRunways, maxHeadWind);
+        airport.setRunways(recipRunways.stream().sorted().collect(Collectors.toList()));
     }
 }

@@ -29,10 +29,8 @@ public class AirportControllerValidTest {
 
     @Autowired
     private WebTestClient webTestClient;
-    @Autowired
-    private AirportAPI airportAPI;
-    @Autowired
-    private WeatherAPI weatherAPI;
+    @Autowired private AirportAPI airportAPI;
+    @Autowired private WeatherAPI weatherAPI;
     private final String AIRPORT_URI = "/v1/airports/";
 
     @Test
@@ -62,6 +60,8 @@ public class AirportControllerValidTest {
                         .ident("13-31")
                         .magneticHeading(130)
                         .recipMagneticHeading(310)
+                        .name("13")
+                        .recipName("31")
                         .build()))
                 .weather(mockedWeather)
                 .build();
