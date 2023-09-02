@@ -4,18 +4,16 @@ import com.foreflight.weather.report.Report;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.UUID;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 @ExtendWith(MockitoExtension.class)
 class WeatherTest {
 
     private Weather underTest;
-    @Mock private Report report;
+    private final Report report = Report.builder().build();
 
     @BeforeEach
     void setUp() {

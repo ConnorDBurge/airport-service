@@ -1,8 +1,13 @@
 package com.foreflight.weather;
 
+import com.foreflight.weather.report.current.Current;
 import com.foreflight.weather.report.current.CurrentDTO;
+import com.foreflight.weather.report.current.wind.Wind;
 import com.foreflight.weather.report.forecast.ForecastDTO;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,13 +26,27 @@ public class WeatherDTO {
     private ForecastDTO forecast;
 
     public static WeatherDTO fromEntity(Weather weather) {
-        WeatherDTOBuilder weatherDTO =  WeatherDTO.builder();
-
-        if (weather.getReport().getCurrent() == null) {
-            weatherDTO.remarks(List.of("Current weather not observed"));
-        } else {
-            weatherDTO.remarks(new ArrayList<>());
+        if (Optional.ofNullable(weather).isEmpty()) {
+            return WeatherDTO.builder().current(null).forecast(null).build();
         }
+
+        if (Optional.ofNullable(weather.getReport()).isEmpty()) {
+            return WeatherDTO.builder().ident(weather.getIdent()).current(null).forecast(null).build();
+        }
+
+        WeatherDTOBuilder weatherDTO =  WeatherDTO.builder().remarks(new ArrayList<>());
+        Optional<Current> currentReportOpt = Optional.ofNullable(weather.getReport().getCurrent());
+        Optional<Wind> currentWindOpt = currentReportOpt.map(Current::getWind);
+
+        if (currentReportOpt.isEmpty()) {
+            weatherDTO.remarks.add("Current weather not observed");
+        }
+
+        currentWindOpt.ifPresent(currentWind -> {
+            if (currentWind.getVariable()) {
+                weatherDTO.remarks.add("Current wind is variable at " + currentWind.getSpeedKts() + " knots");
+            }
+        });
 
         return weatherDTO
                 .ident(weather.getIdent().toUpperCase())
