@@ -12,16 +12,21 @@ class RunwayTest {
     @BeforeEach
     void setUp() {
         underTest = Runway.builder()
-                .ident("KFFC")
+                .ident("13-31")
                 .name("Atlanta Regional Airport - Falcon Field")
-                .recipName("KFFC")
+                .magneticHeading(130)
+                .recipMagneticHeading(310)
+                .recipName("31")
+                .crossWind(10.0)
+                .headWind(10.0)
+                .bestRunway(true)
                 .build();
     }
 
     @Test
     void getIdent() {
         String actual = underTest.getIdent();
-        assertEquals("KFFC", actual);
+        assertEquals("13-31", actual);
     }
 
     @Test
@@ -33,7 +38,51 @@ class RunwayTest {
     @Test
     void getRecipName() {
         String actual = underTest.getRecipName();
-        assertEquals("KFFC", actual);
+        assertEquals("31", actual);
+    }
+
+    @Test
+    void getMagneticHeading() {
+        double actual = underTest.getMagneticHeading();
+        assertEquals(130, actual);
+    }
+
+    @Test
+    void getRecipMagneticHeading() {
+        double actual = underTest.getRecipMagneticHeading();
+        assertEquals(310, actual);
+    }
+
+    @Test
+    void getCrossWind() {
+        double actual = underTest.getCrossWind();
+        assertEquals(10.0, actual);
+    }
+
+    @Test
+    void getHeadWind() {
+        double actual = underTest.getHeadWind();
+        assertEquals(10.0, actual);
+    }
+
+    @Test
+    void setCrossWind() {
+        underTest.setCrossWind(20.0);
+        double actual = underTest.getCrossWind();
+        assertEquals(20.0, actual);
+    }
+
+    @Test
+    void setHeadWind() {
+        underTest.setHeadWind(20.0);
+        double actual = underTest.getHeadWind();
+        assertEquals(20.0, actual);
+    }
+
+    @Test
+    void setBestRunway() {
+        underTest.setBestRunway(false);
+        assertFalse(underTest.isBestRunway());
     }
 
     @Test
@@ -62,5 +111,16 @@ class RunwayTest {
         assertNull(runway.getIdent());
         assertNull(runway.getName());
         assertNull(runway.getRecipName());
+    }
+
+    @Test
+    void compareTo() {
+        Runway r1 = Runway.builder().ident("A").build();
+        Runway r2 = Runway.builder().ident("B").build();
+        Runway r3 = Runway.builder().ident("A").build();
+
+        assertTrue(r1.compareTo(r2) < 0, "Expected r1 < r2");
+        assertTrue(r2.compareTo(r1) > 0, "Expected r2 > r1");
+        assertEquals(0, r1.compareTo(r3), "Expected r1 == r3");
     }
 }

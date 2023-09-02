@@ -15,8 +15,8 @@ public class AirportDTO {
 
     private String ident;
     private String name;
-    private Float latitude;
-    private Float longitude;
+    private Double latitude;
+    private Double longitude;
     private List<RunwayDTO> runways;
     private WeatherDTO weather;
 

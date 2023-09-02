@@ -7,7 +7,11 @@ import com.foreflight.weather.Weather;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import static com.foreflight.util.WindCalculator.calculateWindComponents;
 
 @Service
 @RequiredArgsConstructor
@@ -30,6 +34,7 @@ public class AirportService implements AirportServiceInterface {
                 Weather weather = weatherOpt.get();
                 weather.setIdent(identifier);
                 airport.setWeather(weather);
+                calculateWindComponents(airport);
                 airports.add(airport);
             }
         }

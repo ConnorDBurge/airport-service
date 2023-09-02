@@ -30,8 +30,8 @@ class AirportDTOTest {
         underTest = AirportDTO.builder()
                 .ident("KFFC")
                 .name("Atlanta Regional Airport - Falcon Field")
-                .latitude(33.35725F)
-                .longitude(-84.57172F)
+                .latitude(33.35725)
+                .longitude(-84.57172)
                 .runways(List.of(runway))
                 .weather(weather)
                 .build();
@@ -42,8 +42,8 @@ class AirportDTOTest {
         Airport airport = Airport.builder()
                 .icao("KFFC")
                 .name("Atlanta Regional Airport - Falcon Field")
-                .latitude(33.35725F)
-                .longitude(-84.57172F)
+                .latitude(33.35725)
+                .longitude(-84.57172)
                 .runways(List.of(runwayEntity))
                 .weather(Weather.builder()
                         .ident("KFFC")
@@ -59,8 +59,8 @@ class AirportDTOTest {
         Airport kffc = Airport.builder()
                 .icao("KFFC")
                 .name("Atlanta Regional Airport - Falcon Field")
-                .latitude(33.35725F)
-                .longitude(-84.57172F)
+                .latitude(33.35725)
+                .longitude(-84.57172)
                 .runways(List.of(runwayEntity))
                 .weather(Weather.builder()
                         .ident("KFFC")
@@ -69,8 +69,8 @@ class AirportDTOTest {
         Airport kauo = Airport.builder()
                 .icao("KAUO")
                 .name("Auburn University Regional Airport")
-                .latitude(32.61575F)
-                .longitude(-85.43400F)
+                .latitude(32.61575)
+                .longitude(-85.43400)
                 .runways(List.of(runwayEntity))
                 .weather(Weather.builder()
                         .ident("KAUO")
@@ -99,14 +99,14 @@ class AirportDTOTest {
 
     @Test
     void getLatitude() {
-        Float actual = underTest.getLatitude();
-        assertEquals(33.35725F, actual);
+        Double actual = underTest.getLatitude();
+        assertEquals(33.35725, actual);
     }
 
     @Test
     void getLongitude() {
-        Float actual = underTest.getLongitude();
-        assertEquals(-84.57172F, actual);
+        Double actual = underTest.getLongitude();
+        assertEquals(-84.57172, actual);
     }
 
     @Test
@@ -128,15 +128,15 @@ class AirportDTOTest {
         AirportDTO airport = AirportDTO.builder()
                 .ident("KFFC")
                 .name("Atlanta Regional Airport - Falcon Field")
-                .latitude(33.35725F)
-                .longitude(-84.57172F)
+                .latitude(33.35725)
+                .longitude(-84.57172)
                 .runways(List.of(mockRunway))
                 .weather(mockWeather)
                 .build();
         assertEquals("KFFC", airport.getIdent());
         assertEquals("Atlanta Regional Airport - Falcon Field", airport.getName());
-        assertEquals(33.35725F, airport.getLatitude());
-        assertEquals(-84.57172F, airport.getLongitude());
+        assertEquals(33.35725, airport.getLatitude());
+        assertEquals(-84.57172, airport.getLongitude());
         assertEquals(List.of(mockRunway), airport.getRunways());
         assertEquals(mockWeather, airport.getWeather());
     }

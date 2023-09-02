@@ -12,13 +12,19 @@ public class RunwayDTO {
 
     private String ident;
     private String name;
-    private String recipName;
+    private Integer magneticHeading;
+    private Double crossWind;
+    private Double headWind;
+    private boolean bestRunway;
 
     public static RunwayDTO fromEntity(Runway runway) {
         return RunwayDTO.builder()
                 .ident(runway.getIdent())
                 .name(runway.getName())
-                .recipName(runway.getRecipName())
+                .magneticHeading(runway.getMagneticHeading())
+                .crossWind(runway.getCrossWind())
+                .headWind(runway.getHeadWind())
+                .bestRunway(runway.isBestRunway())
                 .build();
     }
 

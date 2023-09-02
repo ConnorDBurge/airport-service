@@ -7,6 +7,7 @@ import com.foreflight.external.WeatherAPI;
 import com.foreflight.weather.Weather;
 import com.foreflight.weather.report.Report;
 import com.foreflight.weather.report.current.Current;
+import com.foreflight.weather.report.current.wind.Wind;
 import com.foreflight.weather.report.forecast.Forecast;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,8 @@ import static org.mockito.Mockito.*;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class AirportControllerValidTest {
 
-    @Autowired private WebTestClient webTestClient;
+    @Autowired
+    private WebTestClient webTestClient;
     @Autowired private AirportAPI airportAPI;
     @Autowired private WeatherAPI weatherAPI;
     private final String AIRPORT_URI = "/v1/airports/";
@@ -38,7 +40,12 @@ public class AirportControllerValidTest {
         Weather mockedWeather = Weather.builder()
                 .ident(ident)
                 .report(Report.builder()
-                        .current(Current.builder().build())
+                        .current(Current.builder()
+                                .wind(Wind.builder()
+                                        .from(130)
+                                        .speedKts(10.0)
+                                        .build())
+                                .build())
                         .forecast(Forecast.builder()
                                 .ident("KATL")
                                 .build())
@@ -48,7 +55,14 @@ public class AirportControllerValidTest {
         Airport mockedAirport = Airport.builder()
                 .icao("KFFC")
                 .name("Atlanta Regional Falcon Field")
-                .runways(List.of(Runway.builder().build()))
+                .magneticVariation(5)
+                .runways(List.of(Runway.builder()
+                        .ident("13-31")
+                        .magneticHeading(130)
+                        .recipMagneticHeading(310)
+                        .name("13")
+                        .recipName("31")
+                        .build()))
                 .weather(mockedWeather)
                 .build();
 
@@ -85,7 +99,12 @@ public class AirportControllerValidTest {
         Weather mockedWeather1 = Weather.builder()
                 .ident("KFFC")
                 .report(Report.builder()
-                        .current(Current.builder().build())
+                        .current(Current.builder()
+                                .wind(Wind.builder()
+                                        .from(130)
+                                        .speedKts(10.0)
+                                        .build())
+                                .build())
                         .forecast(Forecast.builder()
                                 .ident("KATL")
                                 .build())
@@ -95,14 +114,24 @@ public class AirportControllerValidTest {
         Airport mockedAirport1 = Airport.builder()
                 .icao("KFFC")
                 .name("Atlanta Regional Falcon Field")
-                .runways(List.of(Runway.builder().build()))
+                .magneticVariation(5)
+                .runways(List.of(Runway.builder()
+                        .ident("13-31")
+                        .magneticHeading(130)
+                        .recipMagneticHeading(310)
+                        .build()))
                 .weather(mockedWeather1)
                 .build();
 
         Weather mockedWeather2 = Weather.builder()
                 .ident("KATL")
                 .report(Report.builder()
-                        .current(Current.builder().build())
+                        .current(Current.builder()
+                                .wind(Wind.builder()
+                                        .from(130)
+                                        .speedKts(10.0)
+                                        .build())
+                                .build())
                         .forecast(Forecast.builder()
                                 .ident("KATL")
                                 .build())
@@ -112,7 +141,12 @@ public class AirportControllerValidTest {
         Airport mockedAirport2 = Airport.builder()
                 .icao("KATL")
                 .name("Hartsfield - Jackson Atlanta International")
-                .runways(List.of(Runway.builder().build()))
+                .magneticVariation(5)
+                .runways(List.of(Runway.builder()
+                        .ident("13-31")
+                        .magneticHeading(130)
+                        .recipMagneticHeading(310)
+                        .build()))
                 .weather(mockedWeather2)
                 .build();
 

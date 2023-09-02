@@ -24,8 +24,8 @@ class AirportTest {
         underTest = Airport.builder()
                 .icao("KFFC")
                 .name("Atlanta Regional Airport - Falcon Field")
-                .latitude(33.35725F)
-                .longitude(-84.57172F)
+                .latitude(33.35725)
+                .longitude(-84.57172)
                 .runways(List.of(runway))
                 .weather(weather)
                 .build();
@@ -45,14 +45,14 @@ class AirportTest {
 
     @Test
     void getLatitude() {
-        Float actual = underTest.getLatitude();
-        assertEquals(33.35725F, actual);
+        Double actual = underTest.getLatitude();
+        assertEquals(33.35725, actual);
     }
 
     @Test
     void getLongitude() {
-        Float actual = underTest.getLongitude();
-        assertEquals(-84.57172F, actual);
+        Double actual = underTest.getLongitude();
+        assertEquals(-84.57172, actual);
     }
 
     @Test
@@ -74,15 +74,15 @@ class AirportTest {
         Airport airport = Airport.builder()
                 .icao("KFFC")
                 .name("Atlanta Regional Airport - Falcon Field")
-                .latitude(33.35725F)
-                .longitude(-84.57172F)
+                .latitude(33.35725)
+                .longitude(-84.57172)
                 .runways(List.of(mockRunway))
                 .weather(mockWeather)
                 .build();
         assertEquals("KFFC", airport.getIcao());
         assertEquals("Atlanta Regional Airport - Falcon Field", airport.getName());
-        assertEquals(33.35725F, airport.getLatitude());
-        assertEquals(-84.57172F, airport.getLongitude());
+        assertEquals(33.35725, airport.getLatitude());
+        assertEquals(-84.57172, airport.getLongitude());
         assertEquals(List.of(mockRunway), airport.getRunways());
         assertEquals(mockWeather, airport.getWeather());
     }
