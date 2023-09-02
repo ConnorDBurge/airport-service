@@ -90,11 +90,11 @@ class RunwayTest {
         Runway runway = Runway.builder()
                 .ident("KFFC")
                 .name("Atlanta Regional Airport - Falcon Field")
-                .recipName("KFFC")
+                .recipName("13")
                 .build();
         assertEquals("KFFC", runway.getIdent());
         assertEquals("Atlanta Regional Airport - Falcon Field", runway.getName());
-        assertEquals("KFFC", runway.getRecipName());
+        assertEquals("13", runway.getRecipName());
     }
 
     @Test

@@ -24,7 +24,6 @@ class RunwayDTOTest {
         Runway runway = Runway.builder()
                 .ident("KFFC")
                 .name("Atlanta Regional Airport - Falcon Field")
-                .recipName("KFFC")
                 .build();
         RunwayDTO runwayDTO = RunwayDTO.fromEntity(runway);
         assertEquals("KFFC", runwayDTO.getIdent());
@@ -36,12 +35,10 @@ class RunwayDTOTest {
         Runway kffc = Runway.builder()
                 .ident("KFFC")
                 .name("Atlanta Regional Airport - Falcon Field")
-                .recipName("KFFC")
                 .build();
         Runway kauo = Runway.builder()
                 .ident("KAUO")
                 .name("Auburn University Regional Airport")
-                .recipName("KAUO")
                 .build();
 
         List<RunwayDTO> runwayDTOs = RunwayDTO.fromEntities(List.of(kffc, kauo));

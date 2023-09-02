@@ -51,7 +51,6 @@ class WeatherDTOTest {
                                                 .dateEnd("dateEnd")
                                                 .build())
                                         .temperature(1.0)
-
                                         .build()))
                                 .build())
                         .build())

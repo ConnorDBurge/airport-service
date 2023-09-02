@@ -2,6 +2,7 @@ package com.foreflight.util;
 
 import com.foreflight.airport.Airport;
 import com.foreflight.airport.runway.Runway;
+import com.foreflight.weather.report.Report;
 import com.foreflight.weather.report.current.Current;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
@@ -62,7 +64,12 @@ public class WindCalculator {
      * @param airport the airport to calculate the wind components for
      */
     public static void calculateWindComponents(Airport airport) {
-        Current current = airport.getWeather().getReport().getCurrent();
+        Optional<Report> report = Optional.ofNullable(airport.getWeather().getReport());
+        if (report.isEmpty()) {
+            return;
+        }
+
+        Current current = report.map(Report::getCurrent).orElse(null);
         if (current == null ||
                 current.getWind().getSpeedKts() == null ||
                 current.getWind().getFrom() == null) {

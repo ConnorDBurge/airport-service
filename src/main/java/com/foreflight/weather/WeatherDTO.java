@@ -26,6 +26,14 @@ public class WeatherDTO {
     private ForecastDTO forecast;
 
     public static WeatherDTO fromEntity(Weather weather) {
+        if (Optional.ofNullable(weather).isEmpty()) {
+            return WeatherDTO.builder().current(null).forecast(null).build();
+        }
+
+        if (Optional.ofNullable(weather.getReport()).isEmpty()) {
+            return WeatherDTO.builder().ident(weather.getIdent()).current(null).forecast(null).build();
+        }
+
         WeatherDTOBuilder weatherDTO =  WeatherDTO.builder().remarks(new ArrayList<>());
         Optional<Current> currentReportOpt = Optional.ofNullable(weather.getReport().getCurrent());
         Optional<Wind> currentWindOpt = currentReportOpt.map(Current::getWind);

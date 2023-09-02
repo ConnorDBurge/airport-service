@@ -1,14 +1,9 @@
 package com.foreflight.airport;
 
 import com.foreflight.TestConfig;
-import com.foreflight.airport.runway.Runway;
 import com.foreflight.external.AirportAPI;
 import com.foreflight.external.WeatherAPI;
 import com.foreflight.weather.Weather;
-import com.foreflight.weather.report.Report;
-import com.foreflight.weather.report.current.Current;
-import com.foreflight.weather.report.current.wind.Wind;
-import com.foreflight.weather.report.forecast.Forecast;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -37,34 +32,10 @@ public class AirportControllerValidTest {
     void canGetAirport() {
         String ident = "KFFC";
 
-        Weather mockedWeather = Weather.builder()
-                .ident(ident)
-                .report(Report.builder()
-                        .current(Current.builder()
-                                .wind(Wind.builder()
-                                        .from(130)
-                                        .speedKts(10.0)
-                                        .variable(false)
-                                        .build())
-                                .build())
-                        .forecast(Forecast.builder()
-                                .ident("KATL")
-                                .build())
-                        .build())
-                .build();
-
+        Weather mockedWeather = Weather.builder().build();
         Airport mockedAirport = Airport.builder()
                 .icao("KFFC")
                 .name("Atlanta Regional Falcon Field")
-                .magneticVariation(5)
-                .runways(List.of(Runway.builder()
-                        .ident("13-31")
-                        .magneticHeading(130)
-                        .recipMagneticHeading(310)
-                        .name("13")
-                        .recipName("31")
-                        .build()))
-                .weather(mockedWeather)
                 .build();
 
         ResponseEntity<Airport> airportResponse = ResponseEntity.ok(mockedAirport);
@@ -89,7 +60,7 @@ public class AirportControllerValidTest {
 
         assertThat(airports).hasSize(1);
         AirportDTO returnedAirport = airports.get(0);
-        assertThat(returnedAirport.getIdent()).isEqualTo(ident);
+        assertThat(returnedAirport.getIdent()).isEqualTo("KFFC");
         assertThat(returnedAirport.getName()).isEqualTo("Atlanta Regional Falcon Field");
     }
 
@@ -97,60 +68,17 @@ public class AirportControllerValidTest {
     void canGetMultipleAirports() {
         String idents = "KFFC,KATL";
 
-        Weather mockedWeather1 = Weather.builder()
-                .ident("KFFC")
-                .report(Report.builder()
-                        .current(Current.builder()
-                                .wind(Wind.builder()
-                                        .from(130)
-                                        .speedKts(10.0)
-                                        .variable(false)
-                                        .build())
-                                .build())
-                        .forecast(Forecast.builder()
-                                .ident("KATL")
-                                .build())
-                        .build())
-                .build();
+        Weather mockedWeather1 = Weather.builder().build();
+        Weather mockedWeather2 = Weather.builder().build();
 
         Airport mockedAirport1 = Airport.builder()
                 .icao("KFFC")
                 .name("Atlanta Regional Falcon Field")
-                .magneticVariation(5)
-                .runways(List.of(Runway.builder()
-                        .ident("13-31")
-                        .magneticHeading(130)
-                        .recipMagneticHeading(310)
-                        .build()))
-                .weather(mockedWeather1)
-                .build();
-
-        Weather mockedWeather2 = Weather.builder()
-                .ident("KATL")
-                .report(Report.builder()
-                        .current(Current.builder()
-                                .wind(Wind.builder()
-                                        .from(130)
-                                        .speedKts(10.0)
-                                        .variable(false)
-                                        .build())
-                                .build())
-                        .forecast(Forecast.builder()
-                                .ident("KATL")
-                                .build())
-                        .build())
                 .build();
 
         Airport mockedAirport2 = Airport.builder()
                 .icao("KATL")
                 .name("Hartsfield - Jackson Atlanta International")
-                .magneticVariation(5)
-                .runways(List.of(Runway.builder()
-                        .ident("13-31")
-                        .magneticHeading(130)
-                        .recipMagneticHeading(310)
-                        .build()))
-                .weather(mockedWeather2)
                 .build();
 
         ResponseEntity<Airport> airportResponse1 = ResponseEntity.ok(mockedAirport1);

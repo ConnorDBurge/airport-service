@@ -1,14 +1,10 @@
 package com.foreflight.airport;
 
-import com.foreflight.airport.runway.Runway;
 import com.foreflight.airport.runway.RunwayDTO;
-import com.foreflight.weather.Weather;
 import com.foreflight.weather.WeatherDTO;
-import com.foreflight.weather.report.Report;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
@@ -20,10 +16,8 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 class AirportDTOTest {
 
     private AirportDTO underTest;
-    @Mock private RunwayDTO runway;
-    @Mock private WeatherDTO weather;
-    @Mock private Runway runwayEntity;
-    @Mock private Report report;
+    private final List<RunwayDTO> runways = List.of(RunwayDTO.builder().build());
+    private final WeatherDTO weather = WeatherDTO.builder().build();
 
     @BeforeEach
     void setUp() {
@@ -32,7 +26,7 @@ class AirportDTOTest {
                 .name("Atlanta Regional Airport - Falcon Field")
                 .latitude(33.35725)
                 .longitude(-84.57172)
-                .runways(List.of(runway))
+                .runways(runways)
                 .weather(weather)
                 .build();
     }
@@ -42,12 +36,6 @@ class AirportDTOTest {
         Airport airport = Airport.builder()
                 .icao("KFFC")
                 .name("Atlanta Regional Airport - Falcon Field")
-                .latitude(33.35725)
-                .longitude(-84.57172)
-                .runways(List.of(runwayEntity))
-                .weather(Weather.builder()
-                        .ident("KFFC")
-                        .report(report).build())
                 .build();
         AirportDTO airportDTO = AirportDTO.fromEntity(airport);
         assertEquals("KFFC", airportDTO.getIdent());
@@ -59,22 +47,10 @@ class AirportDTOTest {
         Airport kffc = Airport.builder()
                 .icao("KFFC")
                 .name("Atlanta Regional Airport - Falcon Field")
-                .latitude(33.35725)
-                .longitude(-84.57172)
-                .runways(List.of(runwayEntity))
-                .weather(Weather.builder()
-                        .ident("KFFC")
-                        .report(report).build())
                 .build();
         Airport kauo = Airport.builder()
                 .icao("KAUO")
                 .name("Auburn University Regional Airport")
-                .latitude(32.61575)
-                .longitude(-85.43400)
-                .runways(List.of(runwayEntity))
-                .weather(Weather.builder()
-                        .ident("KAUO")
-                        .report(report).build())
                 .build();
 
         List<AirportDTO> airportDTOs = AirportDTO.fromEntities(List.of(kffc, kauo));
@@ -112,7 +88,7 @@ class AirportDTOTest {
     @Test
     void getRunways() {
         List<RunwayDTO> actual = underTest.getRunways();
-        assertEquals(List.of(runway), actual);
+        assertEquals(runways, actual);
     }
 
     @Test

@@ -2,9 +2,6 @@ package com.foreflight.weather;
 
 import com.foreflight.TestConfig;
 import com.foreflight.external.WeatherAPI;
-import com.foreflight.weather.report.Report;
-import com.foreflight.weather.report.current.Current;
-import com.foreflight.weather.report.forecast.Forecast;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -34,12 +31,6 @@ class WeatherControllerValidTest {
 
         Weather mockedWeather = Weather.builder()
                 .ident("KFFC")
-                .report(Report.builder()
-                        .current(Current.builder().build())
-                        .forecast(Forecast.builder()
-                                .ident("KATL")
-                                .build())
-                        .build())
                 .build();
 
         ResponseEntity<Weather> weatherResponse = ResponseEntity.ok(mockedWeather);
@@ -69,22 +60,10 @@ class WeatherControllerValidTest {
 
         Weather mockedWeather1 = Weather.builder()
                 .ident("KFFC")
-                .report(Report.builder()
-                        .current(Current.builder().build())
-                        .forecast(Forecast.builder()
-                                .ident("KATL")
-                                .build())
-                        .build())
                 .build();
 
         Weather mockedWeather2 = Weather.builder()
                 .ident("KATL")
-                .report(Report.builder()
-                        .current(Current.builder().build())
-                        .forecast(Forecast.builder()
-                                .ident("KATL")
-                                .build())
-                        .build())
                 .build();
 
         ResponseEntity<Weather> weatherResponse1 = ResponseEntity.ok(mockedWeather1);

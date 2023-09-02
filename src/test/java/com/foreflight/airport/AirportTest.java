@@ -2,6 +2,7 @@ package com.foreflight.airport;
 
 import com.foreflight.airport.runway.Runway;
 import com.foreflight.weather.Weather;
+import com.foreflight.weather.WeatherDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,8 +17,8 @@ import static org.junit.jupiter.api.Assertions.*;
 class AirportTest {
 
     private Airport underTest;
-    @Mock private Runway runway;
-    @Mock private Weather weather;
+    private final List<Runway> runways = List.of(Runway.builder().build());
+    private final Weather weather = Weather.builder().build();
 
     @BeforeEach
     void setUp() {
@@ -26,7 +27,7 @@ class AirportTest {
                 .name("Atlanta Regional Airport - Falcon Field")
                 .latitude(33.35725)
                 .longitude(-84.57172)
-                .runways(List.of(runway))
+                .runways(runways)
                 .weather(weather)
                 .build();
     }
@@ -58,13 +59,19 @@ class AirportTest {
     @Test
     void getRunways() {
         List<Runway> actual = underTest.getRunways();
-        assertEquals(List.of(runway), actual);
+        assertEquals(runways, actual);
     }
 
     @Test
     void getWeather() {
         Weather actual = underTest.getWeather();
         assertEquals(weather, actual);
+    }
+
+    @Test
+    void setWeather() {
+        underTest.setWeather(weather);
+        assertEquals(weather, underTest.getWeather());
     }
 
     @Test
@@ -107,11 +114,5 @@ class AirportTest {
         assertNull(airport.getLongitude());
         assertNull(airport.getRunways());
         assertNull(airport.getWeather());
-    }
-
-    @Test
-    void setWeather() {
-        underTest.setWeather(weather);
-        assertEquals(weather, underTest.getWeather());
     }
 }

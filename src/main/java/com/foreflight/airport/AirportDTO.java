@@ -5,6 +5,7 @@ import com.foreflight.weather.WeatherDTO;
 import lombok.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Getter
@@ -21,13 +22,14 @@ public class AirportDTO {
     private WeatherDTO weather;
 
     protected static AirportDTO fromEntity(Airport airport) {
+        Optional<Airport> optAirport = Optional.ofNullable(airport);
         return AirportDTO.builder()
-                .ident(airport.getIcao())
-                .name(airport.getName())
-                .latitude(airport.getLatitude())
-                .longitude(airport.getLongitude())
-                .runways(RunwayDTO.fromEntities(airport.getRunways()))
-                .weather(WeatherDTO.fromEntity(airport.getWeather()))
+                .ident(optAirport.map(Airport::getIcao).orElse(null))
+                .name(optAirport.map(Airport::getName).orElse(null))
+                .latitude(optAirport.map(Airport::getLatitude).orElse(null))
+                .longitude(optAirport.map(Airport::getLongitude).orElse(null))
+                .runways(optAirport.map(a -> RunwayDTO.fromEntities(a.getRunways())).orElse(List.of()))
+                .weather(optAirport.map(a -> WeatherDTO.fromEntity(a.getWeather())).orElse(null))
                 .build();
     }
 

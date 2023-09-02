@@ -2,14 +2,13 @@ package com.foreflight.airport;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.foreflight.TestConfig;
-import com.foreflight.external.AirportAPI;
-import com.foreflight.external.WeatherAPI;
 import com.foreflight.exception.AirportNotFoundException;
 import com.foreflight.exception.WeatherNotFoundException;
+import com.foreflight.external.AirportAPI;
+import com.foreflight.external.WeatherAPI;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
