@@ -42,8 +42,8 @@ class AirportServiceTest {
                 .icao("KFFC")
                 .runways(List.of(Runway.builder().build()))
                 .name("Atlanta Regional Airport - Falcon Field")
-                .latitude(33.35725F)
-                .longitude(-84.57172F)
+                .latitude(33.35725)
+                .longitude(-84.57172)
                 .build();
 
         when(mockWeatherAPI.findWeather("KFFC")).thenReturn(ResponseEntity.of(Optional.of(mockWeather1)));
@@ -68,8 +68,8 @@ class AirportServiceTest {
                 .icao("KFFC")
                 .runways(List.of(Runway.builder().build()))
                 .name("Atlanta Regional Airport - Falcon Field")
-                .latitude(33.35725F)
-                .longitude(-84.57172F)
+                .latitude(33.35725)
+                .longitude(-84.57172)
                 .build();
 
         Weather mockWeather2 = Weather.builder()
@@ -80,8 +80,8 @@ class AirportServiceTest {
                 .icao("KAUO")
                 .runways(List.of(Runway.builder().build()))
                 .name("Auburn University Regional Airport")
-                .latitude(32.61525F)
-                .longitude(-85.43400F)
+                .latitude(32.61525)
+                .longitude(-85.43400)
                 .build();
 
         when(mockWeatherAPI.findWeather("KFFC")).thenReturn(ResponseEntity.of(Optional.of(mockWeather1)));

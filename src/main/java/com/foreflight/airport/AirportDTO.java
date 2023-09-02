@@ -17,7 +17,6 @@ public class AirportDTO {
     private String name;
     private Double latitude;
     private Double longitude;
-    private Integer magneticVariation;
     private List<RunwayDTO> runways;
     private WeatherDTO weather;
 
@@ -27,7 +26,6 @@ public class AirportDTO {
                 .name(airport.getName())
                 .latitude(airport.getLatitude())
                 .longitude(airport.getLongitude())
-                .magneticVariation(airport.getMagneticVariation())
                 .runways(RunwayDTO.fromEntities(airport.getRunways()))
                 .weather(WeatherDTO.fromEntity(airport.getWeather()))
                 .build();

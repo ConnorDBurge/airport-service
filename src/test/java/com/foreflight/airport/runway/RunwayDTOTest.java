@@ -16,7 +16,6 @@ class RunwayDTOTest {
         underTest = RunwayDTO.builder()
                 .ident("KFFC")
                 .name("Atlanta Regional Airport - Falcon Field")
-                .recipName("KFFC")
                 .build();
     }
 
@@ -65,22 +64,15 @@ class RunwayDTOTest {
         assertEquals("Atlanta Regional Airport - Falcon Field", actual);
     }
 
-    @Test
-    void getRecipName() {
-        String actual = underTest.getRecipName();
-        assertEquals("KFFC", actual);
-    }
 
     @Test
     void builder() {
         RunwayDTO runwayDTO = RunwayDTO.builder()
                 .ident("KFFC")
                 .name("Atlanta Regional Airport - Falcon Field")
-                .recipName("KFFC")
                 .build();
         assertEquals("KFFC", runwayDTO.getIdent());
         assertEquals("Atlanta Regional Airport - Falcon Field", runwayDTO.getName());
-        assertEquals("KFFC", runwayDTO.getRecipName());
     }
 
     @Test
@@ -88,7 +80,6 @@ class RunwayDTOTest {
         RunwayDTO runwayDTO = RunwayDTO.builder().build();
         assertNull(runwayDTO.getIdent());
         assertNull(runwayDTO.getName());
-        assertNull(runwayDTO.getRecipName());
     }
 
     @Test
@@ -96,6 +87,5 @@ class RunwayDTOTest {
         RunwayDTO runwayDTO = new RunwayDTO();
         assertNull(runwayDTO.getIdent());
         assertNull(runwayDTO.getName());
-        assertNull(runwayDTO.getRecipName());
     }
 }

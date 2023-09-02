@@ -12,6 +12,7 @@ public class Runway {
     private String recipName;
     private Integer magneticHeading;
     private Integer recipMagneticHeading;
-    @Setter private Double crossWind;
+    @Setter private Double crossWindR;
     @Setter private Double headWind;
+    @Setter private boolean bestRunway;
 }

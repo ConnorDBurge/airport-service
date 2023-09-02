@@ -49,7 +49,7 @@ public class WindCalculator {
     public static void calculateWindComponents(Airport airport) {
         if (airport.getWeather().getReport().getCurrent() == null) {
             for (Runway runway : airport.getRunways()) {
-                runway.setCrossWind(null);
+                runway.setCrossWindR(null);
                 runway.setHeadWind(null);
             }
             return;
@@ -57,6 +57,7 @@ public class WindCalculator {
 
         List<Runway> runways = airport.getRunways();
         List<Runway> recipRunways = new ArrayList<>();
+        double maxHeadWind = Double.NEGATIVE_INFINITY;
         for (Runway runway : runways) {
             WindComponents windComponents = calculateWindComponents(
                     airport.getWeather().getReport().getCurrent().getWind().getSpeedKts(),
@@ -64,7 +65,7 @@ public class WindCalculator {
                     runway.getMagneticHeading(),
                     airport.getMagneticVariation());
 
-            runway.setCrossWind(windComponents.getCrossWind());
+            runway.setCrossWindR(windComponents.getCrossWind());
             runway.setHeadWind(windComponents.getHeadWind());
 
             WindCalculator.WindComponents recipWindComponents = WindCalculator.calculateWindComponents(
@@ -77,10 +78,26 @@ public class WindCalculator {
                     .ident(runway.getIdent().replaceAll("(\\d+)-(\\d+)", "$2-$1"))
                     .name(runway.getRecipName())
                     .magneticHeading(runway.getRecipMagneticHeading())
-                    .crossWind(recipWindComponents.getCrossWind())
+                    .crossWindR(recipWindComponents.getCrossWind())
                     .headWind(recipWindComponents.getHeadWind())
                     .build());
+
+            if (runway.getHeadWind() != null) {
+                maxHeadWind = Math.max(maxHeadWind, runway.getHeadWind());
+            }
         }
         runways.addAll(recipRunways);
+        markBestRunways(runways, maxHeadWind);
+    }
+
+    /**
+     * Marks the best runways for landing and takeoff
+     * @param runways the runways to mark
+     * @param maxHeadWind the maximum headwind
+     */
+    public static void markBestRunways(List<Runway> runways, double maxHeadWind) {
+        for (Runway runway : runways) {
+            runway.setBestRunway(runway.getHeadWind() != null && runway.getHeadWind() == maxHeadWind);
+        }
     }
 }
