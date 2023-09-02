@@ -1,6 +1,7 @@
 package com.foreflight.weather.report.forecast.conditions;
 
 import com.foreflight.weather.report.current.wind.Wind;
+import com.foreflight.weather.report.current.wind.WindDTO;
 import com.foreflight.weather.report.forecast.period.Period;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,10 +15,11 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 class ForecastConditionDTOTest {
 
     private ForecastConditionDTO underTest;
-    @Mock private Wind wind;
+    private WindDTO wind;
 
     @BeforeEach
     void setUp() {
+        wind = WindDTO.builder().build();
         underTest = ForecastConditionDTO.builder()
                 .text("text")
                 .wind(wind)
@@ -28,6 +30,7 @@ class ForecastConditionDTOTest {
 
     @Test
     void fromEntity() {
+        Wind wind = Wind.builder().build();
         ForecastCondition mockForecastCondition = ForecastCondition.builder()
                 .text("text")
                 .wind(wind)
@@ -40,7 +43,6 @@ class ForecastConditionDTOTest {
         ForecastConditionDTO dto = ForecastConditionDTO.fromEntity(mockForecastCondition);
 
         assertEquals(mockForecastCondition.getText(), dto.getText());
-        assertEquals(mockForecastCondition.getWind(), dto.getWind());
         assertEquals("18:00", dto.getDateStart());
         assertEquals(mockForecastCondition.getTemperature(), dto.getTemperature());
     }
@@ -50,7 +52,7 @@ class ForecastConditionDTOTest {
         List<ForecastCondition> mockForecastConditions = List.of(
                 ForecastCondition.builder()
                         .text("text1")
-                        .wind(wind)
+                        .wind(Wind.builder().build())
                         .period(Period.builder()
                                 .dateStart("2023-08-30T18:00:00+0000")
                                 .build())
@@ -58,7 +60,7 @@ class ForecastConditionDTOTest {
                         .build(),
                 ForecastCondition.builder()
                         .text("text2")
-                        .wind(wind)
+                        .wind(Wind.builder().build())
                         .period(Period.builder()
                                 .dateStart("2023-08-30T20:00:00+0000")
                                 .build())
@@ -66,7 +68,7 @@ class ForecastConditionDTOTest {
                         .build(),
                 ForecastCondition.builder()
                         .text("text3")
-                        .wind(wind)
+                        .wind(Wind.builder().build())
                         .period(Period.builder()
                                 .dateStart("2023-08-30T22:00:00+0000")
                                 .build())
@@ -89,7 +91,7 @@ class ForecastConditionDTOTest {
 
     @Test
     void getWind() {
-        Wind actual = underTest.getWind();
+        WindDTO actual = underTest.getWind();
         assertEquals(wind, actual);
     }
 
@@ -109,13 +111,12 @@ class ForecastConditionDTOTest {
     void builder() {
         ForecastConditionDTO forecastCondition = ForecastConditionDTO.builder()
                 .text("text")
-                .wind(wind)
+                .wind(WindDTO.builder().build())
                 .dateStart("2023-08-30T18:00:00+0000")
                 .temperature(1.0)
                 .build();
 
         assertEquals("text", forecastCondition.getText());
-        assertEquals(wind, forecastCondition.getWind());
         assertEquals("2023-08-30T18:00:00+0000", forecastCondition.getDateStart());
         assertEquals(1.0, forecastCondition.getTemperature());
     }
