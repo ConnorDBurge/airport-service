@@ -20,7 +20,7 @@ import static org.mockito.Mockito.*;
 
 @Import(TestConfig.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class AirportControllerValidTest {
+class AirportControllerValidIT {
 
     @Autowired
     private WebTestClient webTestClient;

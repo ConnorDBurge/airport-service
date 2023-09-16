@@ -19,7 +19,7 @@ import static org.mockito.Mockito.when;
 
 @Import(TestConfig.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class WeatherControllerValidTest {
+class WeatherControllerValidIT {
 
     @Autowired private WebTestClient webTestClient;
     @Autowired private WeatherAPI weatherAPI;

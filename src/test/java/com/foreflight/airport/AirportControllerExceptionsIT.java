@@ -19,7 +19,7 @@ import static org.mockito.Mockito.*;
 
 @Import(TestConfig.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class AirportControllerExceptionsTest {
+class AirportControllerExceptionsIT {
 
     @Autowired private WebTestClient webTestClient;
     @Autowired private AirportAPI airportAPI;

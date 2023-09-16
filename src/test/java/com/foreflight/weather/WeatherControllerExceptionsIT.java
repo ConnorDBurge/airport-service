@@ -16,7 +16,7 @@ import static org.mockito.Mockito.*;
 
 @Import(TestConfig.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class WeatherControllerExceptionsTest {
+class WeatherControllerExceptionsIT {
 
     @Autowired private WebTestClient webTestClient;
     @Autowired private WeatherAPI weatherAPI;
