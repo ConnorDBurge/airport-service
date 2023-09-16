@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.Optional;
+
 @Getter
 @Builder
 @AllArgsConstructor
@@ -17,11 +19,15 @@ public class WindDTO {
     private Boolean variable;
 
     public static WindDTO fromEntity(Wind wind) {
-        return WindDTO.builder()
-                .speedKts(wind.getSpeedKts())
-                .direction(wind.getDirection())
-                .from(wind.getFrom())
-                .variable(wind.getVariable())
-                .build();
+        if (wind == null) {
+            return WindDTO.builder().build();
+        } else {
+            return WindDTO.builder()
+                    .speedKts(wind.getSpeedKts())
+                    .direction(wind.getDirection())
+                    .from(wind.getFrom())
+                    .variable(wind.getVariable())
+                    .build();
+        }
     }
 }
