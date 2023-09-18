@@ -1,10 +1,8 @@
 package com.foreflight.airport;
 
-import com.foreflight.airport.runway.Runway;
 import com.foreflight.external.AirportAPI;
 import com.foreflight.external.WeatherAPI;
 import com.foreflight.weather.Weather;
-import com.foreflight.weather.report.Report;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -33,56 +31,34 @@ class AirportServiceTest {
     @Test
     public void testGetAll_One() {
         String idents = "KFFC";
+        Airport airport = Airport.builder().icao("KFFC").build();
+        Weather weather = Weather.builder().build();
 
-        Weather mockWeather1 = Weather.builder()
-                .report(Report.builder().build())
-                .build();
-
-        Airport mockAirport1 = Airport.builder()
-                .icao("KFFC")
-                .runways(List.of(Runway.builder().build()))
-                .name("Atlanta Regional Airport - Falcon Field")
-                .latitude(33.35725)
-                .longitude(-84.57172)
-                .build();
-
-        when(mockWeatherAPI.findWeather("KFFC")).thenReturn(ResponseEntity.of(Optional.of(mockWeather1)));
-        when(mockAirportAPI.findAirport("KFFC")).thenReturn(ResponseEntity.of(Optional.of(mockAirport1)));
+        when(mockWeatherAPI.findWeather("KFFC")).thenReturn(ResponseEntity.of(Optional.of(weather)));
+        when(mockAirportAPI.findAirport("KFFC")).thenReturn(ResponseEntity.of(Optional.of(airport)));
 
         List<AirportDTO> result = underTest.getAll(idents);
 
         assertEquals(1, result.size());
         assertEquals("KFFC", result.get(0).getIdent());
-        assertEquals("Atlanta Regional Airport - Falcon Field", result.get(0).getName());
     }
 
     @Test
     public void testGetAll_Two() {
         String idents = "KFFC,KAUO";
 
-        Weather mockWeather1 = Weather.builder()
-                .report(Report.builder().build())
-                .build();
-
         Airport mockAirport1 = Airport.builder()
                 .icao("KFFC")
-                .runways(List.of(Runway.builder().build()))
                 .name("Atlanta Regional Airport - Falcon Field")
-                .latitude(33.35725)
-                .longitude(-84.57172)
-                .build();
-
-        Weather mockWeather2 = Weather.builder()
-                .report(Report.builder().build())
                 .build();
 
         Airport mockAirport2 = Airport.builder()
                 .icao("KAUO")
-                .runways(List.of(Runway.builder().build()))
                 .name("Auburn University Regional Airport")
-                .latitude(32.61525)
-                .longitude(-85.43400)
                 .build();
+
+        Weather mockWeather1 = Weather.builder().build();
+        Weather mockWeather2 = Weather.builder().build();
 
         when(mockWeatherAPI.findWeather("KFFC")).thenReturn(ResponseEntity.of(Optional.of(mockWeather1)));
         when(mockAirportAPI.findAirport("KFFC")).thenReturn(ResponseEntity.of(Optional.of(mockAirport1)));

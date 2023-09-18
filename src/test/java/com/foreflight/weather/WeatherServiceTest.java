@@ -32,7 +32,6 @@ class WeatherServiceTest {
 
         Weather mockWeather1 = Weather.builder()
                 .ident("KFFC")
-                .report(Report.builder().build())
                 .build();
 
         when(mockWeatherAPI.findWeather("KFFC")).thenReturn(ResponseEntity.of(Optional.of(mockWeather1)));
@@ -49,12 +48,10 @@ class WeatherServiceTest {
 
         Weather mockWeather1 = Weather.builder()
                 .ident("KFFC")
-                .report(Report.builder().build())
                 .build();
 
         Weather mockWeather2 = Weather.builder()
                 .ident("KATL")
-                .report(Report.builder().build())
                 .build();
 
         when(mockWeatherAPI.findWeather("KFFC")).thenReturn(ResponseEntity.of(Optional.of(mockWeather1)));
