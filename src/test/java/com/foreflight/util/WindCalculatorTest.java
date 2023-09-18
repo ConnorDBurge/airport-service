@@ -9,6 +9,7 @@ import com.foreflight.weather.report.current.wind.Wind;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static com.foreflight.util.WindCalculator.calculateWindComponents;
@@ -120,6 +121,7 @@ class WindCalculatorTest {
     public void testCalculateWindComponents_NoWeather() {
         Airport airport = Airport.builder()
                 .weather(Weather.builder()
+                        .remarks(new ArrayList<>())
                         .report(Report.builder()
                                 .current(null)
                                 .build())
