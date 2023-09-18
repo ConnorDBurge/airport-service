@@ -1,4 +1,4 @@
-package com.foreflight.config;
+package com.foreflight.config.openai;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;

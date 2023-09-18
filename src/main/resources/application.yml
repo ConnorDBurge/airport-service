@@ -5,6 +5,11 @@
 spring:
   profiles:
     default: local-postgres
+  datasource:
+    driver-class-name: org.postgresql.Driver
+  docker:
+    compose:
+      enabled: false
 
 api:
   airport:
@@ -20,44 +25,44 @@ springdoc:
       path: /swagger-ui.html
     api-docs:
       enabled: true
+
+management:
+  endpoint:
+    health:
+      show-details: always
+  health:
+    defaults:
+      enabled: true
+---
+######################################################
+# Dev/Staging Configuration
+######################################################
+spring:
+  config:
+    activate:
+      on-profile: dev, staging
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_NAME}
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
 ---
 ######################################################
 # Local Configuration (Postgres & Docker)
 ######################################################
-#spring:
-#  config:
-#    activate:
-#      on-profile: local-postgres
-#  datasource:
-#    driver-class-name: org.postgresql.Driver
-#    url: jdbc:postgresql://localhost:55432/airport_service_db
-#    username: postgres
-#    password: postgres
-#  jpa:
-#    database-platform: org.hibernate.dialect.PostgreSQLDialect
-#  docker:
-#    compose:
-#      file: ./compose.yml
-#      enabled: true
-
----
-######################################################
-# Local Configuration (H2)
-######################################################
-#spring:
-#  config:
-#    activate:
-#      on-profile: local-h2
-#  datasource:
-#    driver-class-name: org.h2.Driver
-#    url: jdbc:h2:mem:airport_service_db
-#    username: root
-#    password: root
-#  h2:
-#    console:
-#      enabled: true
-#  jpa:
-#    database-platform: org.hibernate.dialect.H2Dialect
-#  docker:
-#    compose:
-#      enabled: false
+spring:
+  config:
+    activate:
+      on-profile: local-postgres
+  datasource:
+    url: jdbc:postgresql://localhost:55432/airport_service_db
+    username: postgres
+    password: postgres
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  docker:
+    compose:
+      file: ./compose.yml
+      enabled: true
