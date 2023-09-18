@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.foreflight.util.WindCalculator.calculateWindComponents;
+import static com.foreflight.util.WindCalculator.processRunways;
 
 @Service
 @RequiredArgsConstructor
@@ -34,7 +35,7 @@ public class AirportService implements AirportServiceInterface {
                 Weather weather = weatherOpt.get();
                 weather.setIdent(identifier);
                 airport.setWeather(weather);
-                calculateWindComponents(airport);
+                processRunways(airport);
                 airports.add(airport);
             }
         }
