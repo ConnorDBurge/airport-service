@@ -8,10 +8,14 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.stereotype.Component;
 
+import javax.xml.transform.Source;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static java.util.Objects.isNull;
+import static org.apache.commons.lang3.Validate.notNull;
 
 @Component
 public class WindCalculator {
@@ -70,13 +74,12 @@ public class WindCalculator {
         }
 
         Current current = report.map(Report::getCurrent).orElse(null);
-        if (current == null ||
-                current.getWind().getSpeedKts() == null ||
-                current.getWind().getFrom() == null) {
+        if (isNull(current) || isNull(current.getWind())) {
             for (Runway runway : airport.getRunways()) {
                 runway.setCrossWind(null);
                 runway.setHeadWind(null);
             }
+            airport.getWeather().addRemark("Wind is not reported or is unknown");
             return;
         }
 
@@ -99,16 +102,19 @@ public class WindCalculator {
                     runway.getRecipMagneticHeading(),
                     airport.getMagneticVariation());
 
-            recipRunways.add(Runway.builder()
-                    .ident(runway.getIdent().replaceAll("(\\d+)-(\\d+)", "$2-$1"))
+            Runway recip = Runway.builder()
+                    .ident(runway.getIdent())
                     .name(runway.getRecipName())
                     .magneticHeading(runway.getRecipMagneticHeading())
                     .crossWind(recipWindComponents.getCrossWind())
                     .headWind(recipWindComponents.getHeadWind())
-                    .build());
+                    .build();
 
-            if (runway.getHeadWind() != null) {
+            recipRunways.add(recip);
+
+            if (!isNull(runway.getHeadWind()) && !isNull(recip.getHeadWind())) {
                 maxHeadWind = Math.max(maxHeadWind, runway.getHeadWind());
+                maxHeadWind = Math.max(maxHeadWind, recip.getHeadWind());
             }
         }
 

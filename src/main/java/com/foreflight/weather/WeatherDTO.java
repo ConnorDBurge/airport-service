@@ -39,12 +39,12 @@ public class WeatherDTO {
         Optional<Wind> currentWindOpt = currentReportOpt.map(Current::getWind);
 
         if (currentReportOpt.isEmpty()) {
-            weatherDTO.remarks.add("Current weather not observed");
+            weather.addRemark("Current weather not observed");
         }
 
         currentWindOpt.ifPresent(currentWind -> {
             if (currentWind.getVariable()) {
-                weatherDTO.remarks.add("Current wind is variable at " + currentWind.getSpeedKts() + " knots");
+                weather.addRemark("Current wind is variable at " + currentWind.getSpeedKts() + " knots");
             }
         });
 
@@ -56,6 +56,7 @@ public class WeatherDTO {
                 .forecast(Optional.ofNullable(weather.getReport().getForecast())
                         .map(ForecastDTO::fromEntity)
                         .orElse(null))
+                .remarks(weather.getRemarks())
                 .build();
 
     }

@@ -8,8 +8,11 @@ import com.foreflight.weather.report.current.wind.Wind;
 import com.foreflight.weather.report.forecast.Forecast;
 import com.foreflight.weather.report.forecast.conditions.ForecastCondition;
 import com.foreflight.weather.report.forecast.period.Period;
+import org.checkerframework.checker.units.qual.A;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -70,6 +73,7 @@ class WeatherDTOTest {
     void fromEntity_WithNullCurrent_ReturnsDTOWithNullCurrent() {
         Weather weather = Weather.builder()
                 .ident("KFFC")
+                .remarks(new ArrayList<>())
                 .report(Report.builder()
                         .forecast(Forecast.builder()
                                 .ident("KATL")
@@ -87,6 +91,7 @@ class WeatherDTOTest {
     void fromEntity_WithNullForecast_ReturnsDTOWithNullForecast() {
         Weather weather = Weather.builder()
                 .ident("KFFC")
+                .remarks(Collections.emptyList())
                 .report(Report.builder()
                         .current(Current.builder().build())
                         .build())
@@ -102,6 +107,7 @@ class WeatherDTOTest {
     void fromEntity_WithNullWeatherReport_ReturnsDTOWithNullCurrentAndForecast() {
         Weather weather = Weather.builder()
                 .ident("KFFC")
+                .remarks(new ArrayList<>())
                 .report(Report.builder().build())
                 .build();
 
