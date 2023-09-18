@@ -33,21 +33,6 @@ management:
       enabled: true
 ---
 ######################################################
-# Dev/Staging Configuration
-######################################################
-spring:
-  config:
-    activate:
-      on-profile: dev, staging
-  datasource:
-    driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_NAME}
-    username: ${DATABASE_USERNAME}
-    password: ${DATABASE_PASSWORD}
-  jpa:
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
----
-######################################################
 # Local Configuration (Postgres & Docker)
 ######################################################
 spring:
@@ -66,7 +51,22 @@ spring:
       enabled: true
 ---
 ######################################################
-# Review App Configuration
+# Dev/Staging Configuration
+######################################################
+spring:
+  config:
+    activate:
+      on-profile: dev, staging
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_NAME}
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+---
+######################################################
+# Review App Configuration (For Pull Requests)
 ######################################################
 spring:
   config:
@@ -74,8 +74,12 @@ spring:
       on-profile: review
   datasource:
     url: jdbc:h2:mem:airport_service_db
-    username: sa
-    password: sa
+    username: root
+    password: root
     driver-class-name: org.h2.Driver
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
+  h2:
+    console:
+      enabled: true
+      path: /h2
