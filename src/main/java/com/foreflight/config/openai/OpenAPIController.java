@@ -1,4 +1,4 @@
-package com.foreflight.config;
+package com.foreflight.config.openai;
 
 import io.swagger.v3.oas.annotations.Hidden;
 import org.springframework.web.bind.annotation.GetMapping;
