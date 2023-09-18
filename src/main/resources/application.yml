@@ -5,8 +5,6 @@
 spring:
   profiles:
     default: local-postgres
-  datasource:
-    driver-class-name: org.postgresql.Driver
   docker:
     compose:
       enabled: false

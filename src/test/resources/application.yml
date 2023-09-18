@@ -1,14 +1,26 @@
 ---
 ######################################################
-# Integration Configuration
+# Default Configuration
 ######################################################
 spring:
   profiles:
-    active: integration
+    active: tests
+  docker:
+    compose:
+      enabled: false
+
   datasource:
-    driver-class-name: org.h2.Driver
     url: jdbc:h2:mem:airport_service_db
     username: sa
     password: sa
+    driver-class-name: org.h2.Driver
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
+
+api:
+  airport:
+    username: ${AIRPORT_API_USERNAME}
+    password: ${AIRPORT_API_PASSWORD}
+    url: ${AIRPORT_API_URL}
+  weather:
+    url: ${WEATHER_API_URL}
