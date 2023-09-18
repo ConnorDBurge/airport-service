@@ -9,10 +9,10 @@ import com.foreflight.weather.report.current.wind.Wind;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static com.foreflight.util.WindCalculator.calculateWindComponents;
+import static com.foreflight.util.WindCalculator.processRunways;
 import static org.junit.jupiter.api.Assertions.*;
 
 class WindCalculatorTest {
@@ -111,7 +111,7 @@ class WindCalculatorTest {
         );
 
         airport.setRunways(runways);
-        calculateWindComponents(airport);
+        processRunways(airport);
 
         assertEquals(14.142, runways.get(0).getHeadWind(), EPSILON);
         assertEquals(14.142, runways.get(0).getCrossWind(), EPSILON);
@@ -132,7 +132,7 @@ class WindCalculatorTest {
         runways.add(Runway.builder().ident("02-20").build());
         airport.setRunways(runways);
 
-        calculateWindComponents(airport);
+        processRunways(airport);
 
         assertNull(runways.get(0).getHeadWind());
         assertNull(runways.get(0).getCrossWind());

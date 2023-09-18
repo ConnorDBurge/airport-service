@@ -6,6 +6,7 @@ import com.foreflight.weather.report.Report;
 import com.foreflight.weather.report.current.Current;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import javax.xml.transform.Source;
@@ -24,9 +25,10 @@ public class WindCalculator {
 
     @Getter
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class WindComponents {
-        public double headWind;
-        public double crossWind;
+        public Double headWind = null;
+        public Double crossWind = null;
     }
 
     /**
@@ -67,40 +69,41 @@ public class WindCalculator {
      *
      * @param airport the airport to calculate the wind components for
      */
-    public static void calculateWindComponents(Airport airport) {
+    public static void processRunways(Airport airport) {
         Optional<Report> report = Optional.ofNullable(airport.getWeather().getReport());
         if (report.isEmpty()) {
             return;
         }
 
-        Current current = report.map(Report::getCurrent).orElse(null);
-        if (isNull(current) || isNull(current.getWind())) {
-            for (Runway runway : airport.getRunways()) {
-                runway.setCrossWind(null);
-                runway.setHeadWind(null);
-            }
-            airport.getWeather().addRemark("Wind is not reported or is unknown");
-            return;
-        }
-
         List<Runway> runways = airport.getRunways();
         List<Runway> recipRunways = new ArrayList<>(runways);
+
+        Current current = report.map(Report::getCurrent).orElse(null);
+        boolean noWind = isNull(current) || isNull(current.getWind());
+        if (noWind) {
+            airport.getWeather().addRemark("Wind is not reported or is unknown");
+        }
+
         double maxHeadWind = Double.NEGATIVE_INFINITY;
         for (Runway runway : runways) {
-            WindComponents windComponents = calculateWindComponents(
-                    airport.getWeather().getReport().getCurrent().getWind().getSpeedKts(),
-                    airport.getWeather().getReport().getCurrent().getWind().getFrom(),
-                    runway.getMagneticHeading(),
-                    airport.getMagneticVariation());
+            WindComponents windComponents = noWind
+                    ? new WindComponents()
+                    : calculateWindComponents(
+                        airport.getWeather().getReport().getCurrent().getWind().getSpeedKts(),
+                        airport.getWeather().getReport().getCurrent().getWind().getFrom(),
+                        runway.getMagneticHeading(),
+                        airport.getMagneticVariation());
 
             runway.setCrossWind(windComponents.getCrossWind());
             runway.setHeadWind(windComponents.getHeadWind());
 
-            WindCalculator.WindComponents recipWindComponents = WindCalculator.calculateWindComponents(
-                    airport.getWeather().getReport().getCurrent().getWind().getSpeedKts(),
-                    airport.getWeather().getReport().getCurrent().getWind().getFrom(),
-                    runway.getRecipMagneticHeading(),
-                    airport.getMagneticVariation());
+            WindCalculator.WindComponents recipWindComponents = noWind
+                    ? new WindComponents()
+                    : calculateWindComponents(
+                        airport.getWeather().getReport().getCurrent().getWind().getSpeedKts(),
+                        airport.getWeather().getReport().getCurrent().getWind().getFrom(),
+                        runway.getRecipMagneticHeading(),
+                        airport.getMagneticVariation());
 
             Runway recip = Runway.builder()
                     .ident(runway.getIdent())
