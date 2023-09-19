@@ -17,6 +17,15 @@ public class HaversineCalculator {
         private String bearing;
     }
 
+    /**
+     * Calculates the distance and bearing between two points on Earth using the Haversine formula.
+     *
+     * @param lat1 Latitude of first point
+     * @param lon1 Longitude of first point
+     * @param lat2 Latitude of second point
+     * @param lon2 Longitude of second point
+     * @return Distance and bearing between two points
+     */
     public static HaversineComponents haversineDistanceAndBearing(double lat1, double lon1, double lat2, double lon2) {
         double R = 3440.065;  // Radius of Earth in nautical miles
 
