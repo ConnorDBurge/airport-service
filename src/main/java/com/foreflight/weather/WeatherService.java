@@ -1,5 +1,7 @@
 package com.foreflight.weather;
 
+import com.foreflight.airport.Airport;
+import com.foreflight.external.AirportAPI;
 import com.foreflight.external.WeatherAPI;
 import com.foreflight.weather.interfaces.WeatherServiceInterface;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +16,7 @@ import java.util.Optional;
 public class WeatherService implements WeatherServiceInterface {
 
     private final WeatherAPI weatherAPI;
+    private final AirportAPI airportAPI;
 
     @Override
     public List<WeatherDTO> getAll(String idents) {
@@ -22,10 +25,16 @@ public class WeatherService implements WeatherServiceInterface {
 
         for (String identifier : identifiers) {
             Optional<Weather> weatherOpt = Optional.ofNullable(weatherAPI.findWeather(identifier).getBody());
+            Optional<Airport> airportOpt = Optional.ofNullable(airportAPI.findAirport(identifier).getBody());
 
             if (weatherOpt.isPresent()) {
+                Airport airport = airportOpt.get();
                 Weather identWeather = weatherOpt.get();
+
                 identWeather.setIdent(identifier);
+                identWeather.setLat(airport.getLatitude());
+                identWeather.setLon(airport.getLongitude());
+
                 weather.add(identWeather);
             }
         }

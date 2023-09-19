@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -13,6 +14,14 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Forecast {
-    private String ident;
+
+    private String ident; // Reporting airport ident
     private List<ForecastCondition> conditions;
+    private List<String> remarks = new ArrayList<>();
+    private Double lat;
+    private Double lon;
+
+    public void addRemark(String remark) {
+        remarks.add(remark);
+    }
 }

@@ -25,6 +25,8 @@ class WeatherDTOTest {
     void fromEntity_WithValidWeather_ReturnsExpectedDTO() {
         Weather weather = Weather.builder()
                 .ident("KFFC")
+                .lat(0.0)
+                .lon(0.0)
                 .report(Report.builder()
                         .current(Current.builder()
                                 .temperature(1.0)
@@ -42,6 +44,9 @@ class WeatherDTOTest {
                                 .build())
                         .forecast(Forecast.builder()
                                 .ident("KATL")
+                                .lat(0.0)
+                                .lon(0.0)
+                                .remarks(new ArrayList<>())
                                 .conditions(List.of(ForecastCondition.builder()
                                         .wind(Wind.builder()
                                                 .speedKts(2.0)
@@ -73,10 +78,13 @@ class WeatherDTOTest {
     void fromEntity_WithNullCurrent_ReturnsDTOWithNullCurrent() {
         Weather weather = Weather.builder()
                 .ident("KFFC")
+                .lat(0.0)
+                .lon(0.0)
                 .remarks(new ArrayList<>())
                 .report(Report.builder()
                         .forecast(Forecast.builder()
                                 .ident("KATL")
+                                .conditions(new ArrayList<>())
                                 .build())
                         .build())
                 .build();
@@ -91,7 +99,9 @@ class WeatherDTOTest {
     void fromEntity_WithNullForecast_ReturnsDTOWithNullForecast() {
         Weather weather = Weather.builder()
                 .ident("KFFC")
-                .remarks(Collections.emptyList())
+                .lat(0.0)
+                .lon(0.0)
+                .remarks(new ArrayList<>())
                 .report(Report.builder()
                         .current(Current.builder().build())
                         .build())
