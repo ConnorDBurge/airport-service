@@ -18,6 +18,7 @@ public class CurrentDTO {
     private Double relativeHumidity;
     private String cloudCoverage;
     private Double visibility;
+    private Boolean variable;
     private Double windSpeed;
     private Integer windDirection;
 
@@ -38,6 +39,9 @@ public class CurrentDTO {
                         .orElse(null))
                 .windSpeed(Optional.ofNullable(conditions.getWind())
                         .map(Wind::getSpeedKts)
+                        .orElse(null))
+                .variable(Optional.ofNullable(conditions.getWind())
+                        .map(Wind::getVariable)
                         .orElse(null))
                 .windDirection(Optional.ofNullable(conditions.getWind())
                         .map(Wind::getDirection)

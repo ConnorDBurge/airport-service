@@ -79,7 +79,7 @@ public class WindCalculator {
         List<Runway> recipRunways = new ArrayList<>(runways);
 
         Current current = report.map(Report::getCurrent).orElse(null);
-        boolean noWind = isNull(current) || isNull(current.getWind());
+        boolean noWind = isNull(current) || isNull(current.getWind()) || isNull(current.getWind().getFrom());
         if (noWind) {
             airport.getWeather().addRemark("Wind is not reported or is unknown");
         }
