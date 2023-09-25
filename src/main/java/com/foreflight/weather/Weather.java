@@ -11,10 +11,15 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Weather {
+
     @Setter
     private String ident;
     private Report report;
     private List<String> remarks = new ArrayList<>();
+    @Setter
+    private Double lat;
+    @Setter
+    private Double lon;
 
     public void addRemark(String remark) {
         remarks.add(remark);

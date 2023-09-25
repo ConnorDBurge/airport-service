@@ -32,8 +32,12 @@ public class AirportService implements AirportServiceInterface {
 
             if (airportOpt.isPresent() && weatherOpt.isPresent()) {
                 Airport airport = airportOpt.get();
+
                 Weather weather = weatherOpt.get();
                 weather.setIdent(identifier);
+                weather.setLat(airport.getLatitude());
+                weather.setLon(airport.getLongitude());
+
                 airport.setWeather(weather);
                 processRunways(airport);
                 airports.add(airport);
