@@ -18,11 +18,13 @@ api:
     url: ${WEATHER_API_URL}
 
 springdoc:
-    swagger-ui:
+  swagger-ui:
       enabled: true
       path: /swagger-ui.html
-    api-docs:
-      enabled: true
+  api-docs:
+    enabled: true
+    path: /v1
+  show-actuator: true
 
 management:
   endpoint:

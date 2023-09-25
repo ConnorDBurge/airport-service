@@ -18,12 +18,4 @@ class OpenAPIControllerTest {
                 .expectStatus().is3xxRedirection()
                 .expectHeader().valueMatches("Location", ".*/swagger-ui/index.html$");
     }
-
-    @Test
-    void testRedirectVersionToSwaggerUi() {
-        webTestClient.get().uri("/v1")
-                .exchange()
-                .expectStatus().is3xxRedirection()
-                .expectHeader().valueMatches("Location", ".*/swagger-ui/index.html$");
-    }
 }

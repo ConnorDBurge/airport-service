@@ -13,9 +13,4 @@ public class OpenAPIController {
     public RedirectView redirectRootToSwaggerUi() {
         return new RedirectView("/swagger-ui/index.html");
     }
-
-    @GetMapping("/v1")
-    public RedirectView redirectVersionToSwaggerUi() {
-        return new RedirectView("/swagger-ui/index.html");
-    }
 }
